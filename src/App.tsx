@@ -19,22 +19,28 @@ function App() {
     <>
         <div>
         <GoogleLogin 
-          onSuccess={(credentialResponse) => 
-              {
-                const decoded : Partial<User> = jwtDecode(credentialResponse.credential!) as Partial<User>
-                const userData: User = {
-                  given_name: decoded.given_name ?? "",
-                  family_name: decoded.family_name ?? "",
-                  name: decoded.name ?? "",
-                  email: decoded.email ?? "",
-                };
-    
-                console.log(userData);
-                setUser(userData);
-              } 
-            } 
+          onSuccess={(credentialResponse) => {
+            const decoded: Partial<User> = jwtDecode(credentialResponse.credential!) as Partial<User>;
+          
+            if (decoded.email && decoded.email.endsWith("@ucsd.edu")) {
+              const userData: User = {
+                given_name: decoded.given_name ?? "",
+                family_name: decoded.family_name ?? "",
+                name: decoded.name ?? "",
+                email: decoded.email ?? "",
+              };
+          
+              console.log(userData);
+              setUser(userData);
+            } else {
+              console.log("Login Failed: Restricted ucsd.edu Account");
+              googleLogout();
+              alert("Only ucsd.edu account login is allowed");
+            }
+          }}
           onError={() => console.log("login failed")}
           useOneTap
+          hosted_domain='ucsd.edu'
         />
         <button
             onClick={() => {
