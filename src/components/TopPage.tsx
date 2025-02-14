@@ -1,7 +1,6 @@
-import React from "react"
-import Login from "../components/login";
 import 'bootstrap/dist/css/bootstrap.css'
 import UcsdLogo from '../assets/ucsd-logo.png';
+import Login from "./Login";
 
 function TopPage() {
     return (

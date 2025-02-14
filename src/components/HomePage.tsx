@@ -1,4 +1,5 @@
-import Login from "../components/login";
+import Login from "./Login";
+
 
 function MainPage() {
     return (
