@@ -1,0 +1,104 @@
+.profileWrapper {
+    text-align: center;
+    width: 100%;
+}
+
+.profileContainer {
+    display: flex;
+    justify-content: space-between; 
+    align-items: flex-start; 
+    gap: 400px; 
+    padding: 100px;
+}
+
+.profileTitle {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.profileDivider {
+    width: 80%;
+    margin: 5px auto 15px auto;
+    border: 1px solid #5f68e6;
+}
+
+.profileHeader {
+    flex: 1;
+    max-width: 400px;
+    text-align: center;
+    font-size: 1.4rem;
+
+    margin-left: 100px;
+
+    transform: scale(1.2);
+}
+
+.profileHeader h3 {
+    font-size: 3rem; 
+}
+
+.profileHeader button {
+    font-size: 1.2rem;
+    padding: 10px 10px; 
+}
+
+
+.friendsSection, .pendingRequestsSection {
+    display: flex;
+    flex-direction: column;
+    align-items: start; 
+}
+
+.friendsSection h4, .pendingRequestsSection h4 {
+    margin-bottom: 10px; 
+}
+
+.friendItem, .pendingRequestItem {
+    display: flex;
+    align-items: center; 
+    gap: 10px;
+}
+
+
+.friendRequests {
+    flex: 2; 
+    margin-left: 100px;
+
+    transform: scale(1.2);
+}
+
+.sendRequestContainer button {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    margin-top: 60px; 
+    width: 60%;
+    font-size: 1.3rem;
+
+    padding: 10px 10px;
+
+    background-color: #d0ccccd8;
+    color: #5584db;
+}
+
+.profileImg {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+
+.friendImg {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.friendActions {
+    display: flex;
+    gap: 5px;
+}

@@ -1,5 +1,6 @@
 import Login from "./Login";
 
+import { Link } from "react-router-dom";
 
 function MainPage() {
     return (
@@ -9,6 +10,9 @@ function MainPage() {
         <p className="mb-4">Sign up now to see all events!</p>
         <Login></Login>
         <p className="mt-3 text-muted small">Want to post your events here? <a href="/admin-register" className="text-primary text-decoration-underline">Learn more</a>.</p>
+        <Link to="/profile">
+          <button className="btn btn-primary">Go to Profile Page!</button>
+        </Link>
       </main>
     );
   }
