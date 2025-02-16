@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 
 function Login() {
     const CLIENT_ID = "790798869250-lbundcmheeg71b2cs1c03aa31fb9174h.apps.googleusercontent.com"
-    const [user, setUser] = useState<User | null>(null);
+    const [_, setUser] = useState<User | null>(null);
     
       interface User {
         given_name: string;
