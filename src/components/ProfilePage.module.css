@@ -1,39 +1,51 @@
 .profileWrapper {
     text-align: center;
     width: 100%;
+
+    max-width: 92vw;
+    margin: auto;
+
+    padding: 1vw;
 }
 
 .profileContainer {
     display: flex;
+    flex-direction: row;
     justify-content: space-between; 
     align-items: flex-start; 
-    gap: 400px; 
-    padding: 100px;
+    gap: 10vw; 
+    padding: 2vw;
+    max-width: 92vw;
+    margin: auto;
+
+    flex-wrap: wrap; 
 }
+
 
 .profileTitle {
     text-align: center;
     font-size: 2.5rem;
     font-weight: bold;
-    margin-top: 15px;
-    margin-bottom: 10px;
+    margin-top: 1vw;
+    margin-bottom: 1vw;
 }
 
 .profileDivider {
     width: 80%;
-    margin: 5px auto 15px auto;
+    margin: 0.5vw auto 1vw auto;
     border: 1px solid #5f68e6;
 }
 
 .profileHeader {
     flex: 1;
-    max-width: 400px;
+    max-width: 30vw;
     text-align: center;
     font-size: 1.4rem;
 
-    margin-left: 100px;
+    width: fit-content;
 
-    transform: scale(1.2);
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .profileHeader h3 {
@@ -42,7 +54,7 @@
 
 .profileHeader button {
     font-size: 1.2rem;
-    padding: 10px 10px; 
+    padding: 1vw 2vw;
 }
 
 
@@ -50,55 +62,76 @@
     display: flex;
     flex-direction: column;
     align-items: start; 
+
+    max-width: 70%;
 }
 
 .friendsSection h4, .pendingRequestsSection h4 {
-    margin-bottom: 10px; 
+    display: flex;
+    flex-direction: column;
+    align-items: start; 
+    max-width: 100%;
+
 }
 
 .friendItem, .pendingRequestItem {
     display: flex;
     align-items: center; 
-    gap: 10px;
+    gap: 1vw;
+
+    justify-content: space-between; 
+    width: 100%;
+
+    padding: 0.2vw 0.2vw;
+
+    flex-wrap: nowrap;
 }
 
 
-.friendRequests {
-    flex: 2; 
-    margin-left: 100px;
 
-    transform: scale(1.2);
+.friendRequests {
+    flex: 1; 
+    margin-left: auto;
+    margin-right: auto;
+    
 }
 
 .sendRequestContainer button {
     display: flex;
     justify-content: center; 
     align-items: center; 
-    margin-top: 60px; 
-    width: 60%;
-    font-size: 1.3rem;
+    margin-top: 3vw;
+    width: auto;
+    max-width: 90%;
+    font-size: 1.2rem;
 
-    padding: 10px 10px;
+    padding: 1vw 2vw;
 
     background-color: #d0ccccd8;
     color: #5584db;
 }
 
 .profileImg {
-    width: 180px;
-    height: 180px;
+    max-width: 15vw;
+    max-height: 15vw;
     border-radius: 50%;
-    margin-bottom: 10px;
+    margin-bottom: 1vw;
+
+    width: auto;
+    height: auto;
 }
 
 
 .friendImg {
-    width: 40px;
-    height: 40px;
+    width: 3vw;
+    height: 3vw;
     border-radius: 50%;
 }
 
 .friendActions {
     display: flex;
-    gap: 5px;
+    gap: 0.5vw;
+
+    margin-left: auto;
+    flex-shrink: 0;
 }
