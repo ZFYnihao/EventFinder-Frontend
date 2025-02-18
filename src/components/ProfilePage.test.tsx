@@ -35,11 +35,9 @@ describe("ProfilePage Component", () => {
             </BrowserRouter>
         );
 
-        // 获取并点击 "Admin Event Management" 按钮
         const adminButton = screen.getByRole("button", { name: /admin event management/i });
         fireEvent.click(adminButton);
 
-        // 你可以在这里模拟 `window.location` 或 `history.push` 来检查跳转
         expect(window.location.pathname).toBe("/admin-management");
     });
 });
