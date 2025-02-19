@@ -3,10 +3,13 @@ import { jwtDecode } from "jwt-decode";
 import { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.css'
 import { User } from "../types/User";
+import { useInfo } from "../UserInfo";
 
 function Login() {
     const CLIENT_ID = "790798869250-lbundcmheeg71b2cs1c03aa31fb9174h.apps.googleusercontent.com"
-    const [_, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<User | null>(null);
+    const { dispatch } = useInfo();
+
     
     return (
         <>
@@ -28,6 +31,7 @@ function Login() {
             
                 console.log(userData);
                 setUser(userData);
+                dispatch({ type: "LOGIN", payload: userData });
                 } else {
                 console.log("Login Failed: Restricted ucsd.edu Account");
                 googleLogout();
