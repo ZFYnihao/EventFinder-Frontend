@@ -5,11 +5,13 @@ import styles from "./ProfilePage.module.css";
 import profilePic from "../assets/ProfilePic.png";
 
 import { Link } from "react-router-dom";
+
 import { useInfo } from "../UserInfo";
 
 const ProfilePage: React.FC = () => {
     const { state } = useInfo();
     console.log(state);
+
     return (
         <div className={styles.profileWrapper}>
                 <h2 className={styles.profileTitle}>My Profile</h2>

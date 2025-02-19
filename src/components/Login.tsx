@@ -4,47 +4,71 @@ import { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.css'
 import { User } from "../types/User";
 import { useInfo } from "../UserInfo";
+import { addUsers } from "../api/UserApi"
 
 function Login() {
-    const CLIENT_ID = "790798869250-lbundcmheeg71b2cs1c03aa31fb9174h.apps.googleusercontent.com"
+    const CLIENT_ID = "790798869250-lbundcmheeg71b2cs1c03aa31fb9174h.apps.googleusercontent.com";
     const [user, setUser] = useState<User | null>(null);
     const { dispatch } = useInfo();
 
-    
+    const handleLogin = async (userData: User, token: string) => {
+        setUser(userData);
+        dispatch({ type: "LOGIN", payload: userData });
+        // addUsers(userData, token).then((response) => {
+        //     if (response) {
+        //         console.log("User logged in:", userData);
+        //         setUser(userData);
+        //         dispatch({ type: "LOGIN", payload: userData });
+        //     } else {
+        //         console.error("Failed to login user", response);
+        //     }
+        // })
+        // .catch((error) => {
+        //     console.error("Error logging in:", error);
+        // });
+    };
+
+    const handleLogout = () => {
+        googleLogout();
+        setUser(null);
+        console.log("User logged out");
+    };
+
     return (
-        <>
-            <GoogleOAuthProvider clientId={CLIENT_ID}>
-            <GoogleLogin 
-            onSuccess={(credentialResponse) => {
-                console.log(credentialResponse)
-                const token = credentialResponse.credential
-                console.log(token)
-                const decoded: Partial<User> = jwtDecode(credentialResponse.credential!) as Partial<User>;
-            
-                if (decoded.email && decoded.email.endsWith("@ucsd.edu")) {
-                const userData: User = {
-                    given_name: decoded.given_name ?? "",
-                    family_name: decoded.family_name ?? "",
-                    name: decoded.name ?? "",
-                    email: decoded.email ?? "",
-                };
-            
-                console.log(userData);
-                setUser(userData);
-                dispatch({ type: "LOGIN", payload: userData });
-                } else {
-                console.log("Login Failed: Restricted ucsd.edu Account");
-                googleLogout();
-                alert("Only ucsd.edu account login is allowed");
-                }
-            }}
-            onError={() => console.log("login failed")}
-            useOneTap
-            hosted_domain='ucsd.edu'
-            />
-            </GoogleOAuthProvider>
-        </>
-    )
+        <GoogleOAuthProvider clientId={CLIENT_ID}>
+            <div className="d-flex justify-content-center align-items-center flex-column">
+                {user ? (
+                    <div className="d-flex align-items-center justify-content-between">
+                    <p className="mb-0 me-3">Welcome, {user.name}</p>
+                    <button className="btn btn-secondary" onClick={handleLogout}>Logout</button>
+                </div>
+                ) : (
+                    <GoogleLogin
+                        onSuccess={(credentialResponse) => {
+                            const token = credentialResponse.credential ?? "";
+                            const decoded: Partial<User> = jwtDecode(token!) as Partial<User>;
+
+                            if (decoded.email && decoded.email.endsWith("@ucsd.edu")) {
+                                const userData: User = {
+                                    given_name: decoded.given_name ?? "",
+                                    family_name: decoded.family_name ?? "",
+                                    name: decoded.name ?? "",
+                                    email: decoded.email ?? "",
+                                };
+                                handleLogin(userData, token);
+                            } else {
+                                console.log("Login Failed: Restricted to @ucsd.edu accounts.");
+                                googleLogout();
+                                alert("Only @ucsd.edu accounts are allowed.");
+                            }
+                        }}
+                        onError={() => console.log("Login failed")}
+                        useOneTap
+                    />
+                )}
+            </div>
+        </GoogleOAuthProvider>
+    );
 }
 
-export default Login
+export default Login;
