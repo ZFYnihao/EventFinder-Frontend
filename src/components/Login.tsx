@@ -2,18 +2,12 @@ import { GoogleLogin, googleLogout, GoogleOAuthProvider } from "@react-oauth/goo
 import { jwtDecode } from "jwt-decode";
 import { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.css'
-
+import { User } from "../types/User";
 
 function Login() {
     const CLIENT_ID = "790798869250-lbundcmheeg71b2cs1c03aa31fb9174h.apps.googleusercontent.com"
     const [_, setUser] = useState<User | null>(null);
     
-      interface User {
-        given_name: string;
-        family_name: string;
-        name: string;
-        email: string;
-      }
     return (
         <>
             <GoogleOAuthProvider clientId={CLIENT_ID}>
