@@ -14,18 +14,18 @@ function Login() {
     const handleLogin = async (userData: User, token: string) => {
         setUser(userData);
         dispatch({ type: "LOGIN", payload: userData });
-        // addUsers(userData, token).then((response) => {
-        //     if (response) {
-        //         console.log("User logged in:", userData);
-        //         setUser(userData);
-        //         dispatch({ type: "LOGIN", payload: userData });
-        //     } else {
-        //         console.error("Failed to login user", response);
-        //     }
-        // })
-        // .catch((error) => {
-        //     console.error("Error logging in:", error);
-        // });
+        addUsers(token).then((response) => {
+            if (response) {
+                console.log("User logged in:", userData);
+                setUser(userData);
+                dispatch({ type: "LOGIN", payload: userData });
+            } else {
+                console.error("Failed to login user", response);
+             }
+        })
+        .catch((error) => {
+            console.error("Error logging in:", error);
+        });
     };
 
     const handleLogout = () => {
