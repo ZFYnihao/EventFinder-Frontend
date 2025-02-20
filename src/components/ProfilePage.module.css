@@ -60,10 +60,16 @@
 
 .friendsSection, .pendingRequestsSection {
     display: flex;
-    flex-direction: column;
-    align-items: start; 
+    flex-direction: column; /* 讓 h4 在上，ul 在下 */
+    max-height: 250px; /* 設定最大高度，可根據需求調整 */
+    border: 1px solid #ddd; /* 可選，增加邊框 */
+    padding: 10px;
+}
 
-    max-width: 70%;
+.friendsList, .pendingRequestsList{
+    overflow-y: auto; /* 只有這個區塊可以滾動 */
+    max-height: 180px; /* 限制滾動區域的高度 */
+    padding-right: 5px; /* 避免滾動條壓住內容 */
 }
 
 .friendsSection h4, .pendingRequestsSection h4 {

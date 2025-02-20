@@ -7,10 +7,13 @@ import profilePic from "../assets/ProfilePic.png";
 import { Link } from "react-router-dom";
 
 import { useInfo } from "../UserInfo";
+import { Friend } from "../types/Friend"
+import { mockFriends } from "../MockData"
 
 const ProfilePage: React.FC = () => {
     const { state } = useInfo();
     console.log(state);
+    const friends : Array<Friend> = mockFriends
 
     return (
         <div className={styles.profileWrapper}>
@@ -44,48 +47,43 @@ const ProfilePage: React.FC = () => {
                         {/* friend list */}
                         <div className={`col-md-5 ${styles.friendsSection}`}>
                             <h4>Friends:</h4>
-                            <ul className="list-unstyled">
+                            <div className={styles.friendsList}>
+                                <ul className="list-unstyled">
+                                    {friends.map((friend) => (
+                                        <li className={styles.friendItem}>
+                                            <img src={profilePic} alt="Friend" className={styles.friendImg} />
+                                            {friend.name}
+                                        </li>
+                                    ))}
 
-                                <li className={styles.friendItem}>
-                                    <img src={profilePic} alt="Friend" className={styles.friendImg} />
-                                    Jane Doe 2
-                                </li>
-
-                                <li className={styles.friendItem}>
-                                    <img src={profilePic} alt="Friend" className={styles.friendImg} />
-                                    Jane Doe 3
-                                </li>
-
-                                <li className={styles.friendItem}>
-                                    <img src={profilePic} alt="Friend" className={styles.friendImg} />
-                                    Jane Doe 4
-                                </li>
-
-                            </ul>
+                                </ul>
+                            </div>
                         </div>
 
                         {/* Pending Requests */}
                         <div className={`col-md-6 ${styles.pendingRequestsSection}`}>
                             <h4>Pending Requests:</h4>
-                            <ul className="list-unstyled">
+                            <div className={styles.pendingRequestsList}>
+                                <ul className="list-unstyled">
 
-                                <li className={`${styles.friendItem} d-flex align-items-center`}>
-                                    <img src={profilePic} alt="Friend" className={styles.friendImg} />
-                                    Jan Doe 5
-                                    <div className={styles.friendActions}>
-                                        <button className="btn btn-success btn-sm">✔</button>
-                                        <button className="btn btn-danger btn-sm">✖</button>
-                                    </div>
-                                </li>
-                                <li className={`${styles.friendItem} d-flex align-items-center`}>
-                                    <img src={profilePic} alt="Friend" className={styles.friendImg} />
-                                    Jan Doe 6
-                                    <div className={styles.friendActions}>
-                                        <button className="btn btn-success btn-sm">✔</button>
-                                        <button className="btn btn-danger btn-sm">✖</button>
-                                    </div>
-                                </li>
-                            </ul>
+                                    <li className={`${styles.friendItem} d-flex align-items-center`}>
+                                        <img src={profilePic} alt="Friend" className={styles.friendImg} />
+                                        Jan Doe 5
+                                        <div className={styles.friendActions}>
+                                            <button className="btn btn-success btn-sm">✔</button>
+                                            <button className="btn btn-danger btn-sm">✖</button>
+                                        </div>
+                                    </li>
+                                    <li className={`${styles.friendItem} d-flex align-items-center`}>
+                                        <img src={profilePic} alt="Friend" className={styles.friendImg} />
+                                        Jan Doe 6
+                                        <div className={styles.friendActions}>
+                                            <button className="btn btn-success btn-sm">✔</button>
+                                            <button className="btn btn-danger btn-sm">✖</button>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
 
                     </div>
