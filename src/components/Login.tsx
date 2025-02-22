@@ -16,6 +16,7 @@ function Login() {
         dispatch({ type: "LOGIN", payload: userData });
         addUsers(token).then((response) => {
             if (response) {
+                console.log(token)
                 console.log("User logged in:", userData);
                 setUser(userData);
                 dispatch({ type: "LOGIN", payload: userData });
@@ -54,6 +55,7 @@ function Login() {
                                     family_name: decoded.family_name ?? "",
                                     name: decoded.name ?? "",
                                     email: decoded.email ?? "",
+                                    token: token ?? "",
                                 };
                                 handleLogin(userData, token);
                             } else {

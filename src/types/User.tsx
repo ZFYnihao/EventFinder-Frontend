@@ -3,4 +3,5 @@ export interface User {
     family_name: string;
     name: string;
     email: string;
+    token: string;
 }

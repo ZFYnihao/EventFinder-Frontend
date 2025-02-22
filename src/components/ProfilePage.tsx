@@ -1,19 +1,70 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ProfilePage.module.css";
 import profilePic from "../assets/ProfilePic.png";
 import { Link } from "react-router-dom";
 import { useInfo } from "../UserInfo";
 import { Friend } from "../types/Friend";
 import { mockFriends, mockUsers } from "../api/MockProfileData";
+import { getFriends, getFriendsRequest } from "../api/FriendApi";
 
 const ProfilePage: React.FC = () => {
     const { state } = useInfo();
-    console.log(state);
-    const friends: Array<Friend> = mockFriends;
+    const [friends, setFriends] = useState<Array<Friend>>([]);
+    const [friendRequests, setFriendRequests] = useState<Array<Friend>>([]);
+    // const friends: Array<Friend> = mockFriends;
+    useEffect(() => {
+        const fetchFriends = async () => {
+            if (!state.user?.token) {
+                console.warn("Token is missing. Skipping API call.");
+                return;
+            }
+    
+            try {
+                const response = await getFriends(state.user.token);
+                console.log("response")
+                console.log(response.friends)
+                if (Array.isArray(response.friends)) {
+                    setFriends(response.friends);
+                } else {
+                    console.error("Unexpected response format:", response);
+                    setFriends([]); 
+                }
+            } catch (error) {
+                console.error("Failed to get friends:", error);
+                setFriends([]);
+            }
+        };
 
+        const fetchFriendReuest = async () => {
+            if (!state.user?.token) {
+                console.warn("Token is missing. Skipping API call.");
+                return;
+            }
+    
+            try {
+                const response = await getFriendsRequest(state.user.token);
+                console.log("response")
+                console.log(response)
+                if (Array.isArray(response.friendRequests)) {
+                    setFriendRequests(response.friendRequests);
+                } else {
+                    console.error("Unexpected response format:", response);
+                    setFriendRequests([]); 
+                }
+            } catch (error) {
+                console.error("Failed to get friends:", error);
+                setFriendRequests([]);
+            }
+        };
+    
+        fetchFriends();
+        fetchFriendReuest();
+    }, [state.user?.token]); // 依賴 token，只有變更時才執行
+    
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [searchResults, setSearchResults] = useState<Array<Friend>>([]);
     const [sentRequests, setSentRequests] = useState<Set<string>>(new Set());
+
 
     const handleSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
@@ -23,7 +74,7 @@ const ProfilePage: React.FC = () => {
                 return;
             }
             const results = mockUsers.filter((user) =>
-                user.name.toLowerCase().includes(searchQuery.toLowerCase())
+                user.fullname.toLowerCase().includes(searchQuery.toLowerCase())
             );
             console.log(results)
             setSearchResults(results);
@@ -31,8 +82,8 @@ const ProfilePage: React.FC = () => {
     };
 
     const sendFriendRequest = (user: Friend) => {
-        setSentRequests((prev) => new Set(prev).add(user.name));
-        alert(`Friend request sent to ${user.name}!`);
+        setSentRequests((prev) => new Set(prev).add(user.fullname));
+        alert(`Friend request sent to ${user.fullname}!`);
     };
 
     return (
@@ -66,10 +117,10 @@ const ProfilePage: React.FC = () => {
                             <h4>Friends:</h4>
                             <div className={styles.friendsList}>
                                 <ul className="list-unstyled">
-                                    {friends.map((friend) => (
-                                        <li key={friend.name} className={styles.friendItem}>
+                                    {(friends ?? []).map((friend) => (
+                                        <li key={friend.fullname} className={styles.friendItem}>
                                             <img src={profilePic} alt="Friend" className={styles.friendImg} />
-                                            {friend.name}
+                                            {friend.fullname}
                                         </li>
                                     ))}
                                 </ul>
@@ -81,22 +132,16 @@ const ProfilePage: React.FC = () => {
                             <h4>Pending Requests:</h4>
                             <div className={styles.pendingRequestsList}>
                                 <ul className="list-unstyled">
-                                    <li className={`${styles.friendItem} d-flex align-items-center`}>
-                                        <img src={profilePic} alt="Friend" className={styles.friendImg} />
-                                        Jan Doe 5
+                                    {(friendRequests ?? []).map((friendRequests) => (
+                                        <li className={`${styles.friendItem} d-flex align-items-center`}>
+                                        <img key={friendRequests.fullname} src={profilePic} alt="Friend" className={styles.friendImg} />
+                                        {friendRequests.fullname}
                                         <div className={styles.friendActions}>
                                             <button className="btn btn-success btn-sm">✔</button>
                                             <button className="btn btn-danger btn-sm">✖</button>
                                         </div>
                                     </li>
-                                    <li className={`${styles.friendItem} d-flex align-items-center`}>
-                                        <img src={profilePic} alt="Friend" className={styles.friendImg} />
-                                        Jan Doe 6
-                                        <div className={styles.friendActions}>
-                                            <button className="btn btn-success btn-sm">✔</button>
-                                            <button className="btn btn-danger btn-sm">✖</button>
-                                        </div>
-                                    </li>
+                                    ))}
                                 </ul>
                             </div>
                         </div>
@@ -115,15 +160,15 @@ const ProfilePage: React.FC = () => {
                         {searchResults.length > 0 && (
                             <div className={styles.searchResults}>
                                 {searchResults.map((user) => (
-                                    <div key={user.name} className={`${styles.friendItem} d-flex align-items-center`}>
+                                    <div key={user.fullname} className={`${styles.friendItem} d-flex align-items-center`}>
                                         <img src={profilePic} alt="User" className={styles.friendImg} />
-                                        {user.name}
+                                        {user.fullname}
                                         <button
                                             className="btn btn-primary btn-sm ml-2"
                                             onClick={() => sendFriendRequest(user)}
-                                            disabled={sentRequests.has(user.name)}
+                                            disabled={sentRequests.has(user.fullname)}
                                         >
-                                            {sentRequests.has(user.name) ? "Request Sent" : "Send Request"}
+                                            {sentRequests.has(user.fullname) ? "Request Sent" : "Send Request"}
                                         </button>
                                     </div>
                                 ))}
