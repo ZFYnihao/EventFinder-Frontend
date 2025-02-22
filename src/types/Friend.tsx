@@ -7,6 +7,6 @@ export interface GetFriendResponse {
     friends : Array<Friend>;
 }
 
-export interface GetFriendRequest {
+export interface GetFriendRequestResponse {
     friendRequests : Array<Friend>;
 }

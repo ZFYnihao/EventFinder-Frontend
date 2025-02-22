@@ -4,7 +4,7 @@ import profilePic from "../assets/ProfilePic.png";
 import { Link } from "react-router-dom";
 import { useInfo } from "../UserInfo";
 import { Friend } from "../types/Friend";
-import { mockFriends, mockUsers } from "../api/MockProfileData";
+import { mockUsers } from "../api/MockProfileData";
 import { getFriends, getFriendsRequest } from "../api/FriendApi";
 
 const ProfilePage: React.FC = () => {
