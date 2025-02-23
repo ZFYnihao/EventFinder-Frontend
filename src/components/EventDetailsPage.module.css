@@ -1,0 +1,71 @@
+.titleDiv {
+	max-height: 4rem;
+}
+
+.descriptionDiv {
+	padding-left: 15%;
+	padding-right: 15%;
+}
+
+.moreInfo {
+	width: 15rem;
+	height: 13rem;
+	padding: 0.8rem 0.8rem 0.8rem 0.8rem;
+	background-color: #F6F1F1;
+	align-items: center;
+	justify-content: center;
+}
+
+.dateTimeDiv{
+	padding-bottom: 0.0rem;
+}
+
+.locationDiv {
+	padding-bottom: 0.0rem;
+}
+
+.registerButtonDiv {
+	padding-bottom: 0.0rem;
+}
+
+.moreInfo button{
+	padding: 0.3rem;
+	width: 10rem;
+	background-color: #2F3061;
+	color: #FFFFFF;
+	border-radius: 12px;
+}
+
+.moreInfo img{
+	padding: 5%;
+	width: 1.3rem;
+}
+
+.moreInfo p{
+	font-size: small;
+}
+
+.friendsList {
+	width: 15rem;
+	height: 13rem;
+    overflow-y: auto;
+}
+
+.friendItem {
+    display: flex;
+    align-items: center; 
+    gap: 1vw;
+
+    justify-content: space-between; 
+    width: 100%;
+
+    padding: 0.2vw 0.2vw;
+
+    flex-wrap: nowrap;
+}
+
+.friendImg {
+    width: 3vw;
+    height: 3vw;
+    border-radius: 50%;
+}

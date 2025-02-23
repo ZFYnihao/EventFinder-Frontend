@@ -6,6 +6,8 @@ import ProfilePage from "./components/ProfilePage";
 
 import AllEventPage from "./components/AllEventPage";
 
+import EventDetailsPage from "./components/EventDetailsPage"
+
 import { UserProvider } from "./UserInfo";
 
 function App() {
@@ -18,6 +20,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/all-events" element={<AllEventPage />} />
+              <Route path="/event/:id" element={<EventDetailsPage />} />
             </Routes>
           </div>
       </BrowserRouter>
