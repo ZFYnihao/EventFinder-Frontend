@@ -56,6 +56,7 @@ function Login() {
                                     name: decoded.name ?? "",
                                     email: decoded.email ?? "",
                                     token: token ?? "",
+                                    picture: decoded.picture??"",
                                 };
                                 handleLogin(userData, token);
                             } else {

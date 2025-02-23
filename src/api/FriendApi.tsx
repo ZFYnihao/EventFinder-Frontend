@@ -4,7 +4,7 @@ import { GetFriendResponse, GetFriendRequestResponse, GetFriendMessageResponse }
 const BASE_URL = "http://127.0.0.1:8000/friend";
 
 export async function getFriends(token : string): Promise<GetFriendResponse> {
-  const response: AxiosResponse<GetFriendResponse> = await axios.get(`${BASE_URL}/friend`, {
+  const response: AxiosResponse<GetFriendResponse> = await axios.get(`${BASE_URL}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -14,7 +14,7 @@ export async function getFriends(token : string): Promise<GetFriendResponse> {
 }
 
 export async function getFriendsRequest(token : string): Promise<GetFriendRequestResponse> {
-    const response: AxiosResponse<GetFriendRequestResponse> = await axios.get(`${BASE_URL}/friend/request`, {
+    const response: AxiosResponse<GetFriendRequestResponse> = await axios.get(`${BASE_URL}/request`, {
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -24,7 +24,7 @@ export async function getFriendsRequest(token : string): Promise<GetFriendReques
 }
 
 export async function acceptFriendsRequest(token : string, respondentId : number): Promise<GetFriendMessageResponse> {
-    const req = {respondentId : respondentId}
+    const req = {requesterId : respondentId}
     try {
         const response: AxiosResponse<GetFriendMessageResponse> = await axios.post(`${BASE_URL}/acceptRequest`, req, {
             headers: {
@@ -65,6 +65,25 @@ export async function sendFriendsRequest(token : string, respondentId : number):
     const req = {respondentId : respondentId}
     try {
         const response: AxiosResponse<GetFriendMessageResponse> = await axios.post(`${BASE_URL}/sendRequest`, req, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error: any) {
+        if (error.response.data) {
+            return error.response.data;
+        } else {
+            throw error;
+        }
+    }
+}
+
+export async function deleteFriend(token : string, friendId : number): Promise<GetFriendMessageResponse> {
+    const req = {friendId : friendId}
+    try {
+        const response: AxiosResponse<GetFriendMessageResponse> = await axios.post(`${BASE_URL}/remove`, req, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
