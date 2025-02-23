@@ -42,8 +42,8 @@ export async function acceptFriendsRequest(token : string, respondentId : number
     }
 }
 
-export async function declineFriendsRequest(token : string, respondentId : number): Promise<GetFriendMessageResponse> {
-    const req = {respondentId : respondentId}
+export async function declineFriendsRequest(token : string, requesterId : number): Promise<GetFriendMessageResponse> {
+    const req = {requesterId : requesterId}
     try {
         const response: AxiosResponse<GetFriendMessageResponse> = await axios.post(`${BASE_URL}/declineRequest`, req, {
             headers: {
