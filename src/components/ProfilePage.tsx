@@ -148,7 +148,7 @@ const ProfilePage: React.FC = () => {
                     <h3>{state.user?.name}</h3>
                     <p className="text-muted">{state.user?.email}</p>
                     <p className="mb-5" style={{ color: "#e672d0", fontSize: "1.2rem", fontWeight: "bold" }}>
-                        ##1 Friends
+                        {friends.length} Friends
                     </p>
                 </div>
 
