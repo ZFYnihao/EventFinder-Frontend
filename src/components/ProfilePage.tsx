@@ -114,7 +114,7 @@ const ProfilePage: React.FC = () => {
             }
             
          })
-        .catch((error) => { });
+        .catch((error) => { console.error(error) });
     };
     const declineFriendRequest = (user: Friend) => {
         declineFriendsRequest(state.user?.token ?? "", user.id).then((response : GetFriendMessageResponse) => {
@@ -124,7 +124,7 @@ const ProfilePage: React.FC = () => {
                 alert(`Declined Friend Request error: ${response.error}!`);
             }
          })
-        .catch((error) => { });
+        .catch((error) => { console.error(error) });
     };
 
     return (
