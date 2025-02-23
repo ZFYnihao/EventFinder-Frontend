@@ -1,4 +1,5 @@
 export interface Friend {
+    id: number;
     fullname: string;
     email: string;
 }
@@ -9,4 +10,9 @@ export interface GetFriendResponse {
 
 export interface GetFriendRequestResponse {
     friendRequests : Array<Friend>;
+}
+
+export interface GetFriendMessageResponse {
+    message : string | null
+    error : string | null
 }

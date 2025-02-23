@@ -3,15 +3,15 @@ import styles from "./ProfilePage.module.css";
 import profilePic from "../assets/ProfilePic.png";
 import { Link } from "react-router-dom";
 import { useInfo } from "../UserInfo";
-import { Friend } from "../types/Friend";
-import { mockUsers } from "../api/MockProfileData";
-import { getFriends, getFriendsRequest } from "../api/FriendApi";
+import { Friend, GetFriendMessageResponse } from "../types/Friend";
+import { getFriends, getFriendsRequest, sendFriendsRequest, acceptFriendsRequest, declineFriendsRequest } from "../api/FriendApi";
+import { getUsers } from "../api/UserApi";
+import { User } from "../types/User";
 
 const ProfilePage: React.FC = () => {
     const { state } = useInfo();
     const [friends, setFriends] = useState<Array<Friend>>([]);
     const [friendRequests, setFriendRequests] = useState<Array<Friend>>([]);
-    // const friends: Array<Friend> = mockFriends;
     useEffect(() => {
         const fetchFriends = async () => {
             if (!state.user?.token) {
@@ -59,31 +59,72 @@ const ProfilePage: React.FC = () => {
     
         fetchFriends();
         fetchFriendReuest();
-    }, [state.user?.token]); // 依賴 token，只有變更時才執行
+    }, [state.user?.token]);
     
     const [searchQuery, setSearchQuery] = useState<string>("");
-    const [searchResults, setSearchResults] = useState<Array<Friend>>([]);
-    const [sentRequests, setSentRequests] = useState<Set<string>>(new Set());
+    const [searchResults, setSearchResults] = useState<Array<User>>([]);
+    const [sentRequests, setSentRequests] = useState<Set<number>>(new Set());
 
 
     const handleSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
             console.log(searchQuery)
-            if (searchQuery.trim() === "") {
-                setSearchResults([]); 
-                return;
-            }
-            const results = mockUsers.filter((user) =>
-                user.fullname.toLowerCase().includes(searchQuery.toLowerCase())
-            );
-            console.log(results)
-            setSearchResults(results);
+            getUsers(searchQuery, state.user?.token ?? "").then((response : Array<User>) => {
+                if (response) {
+                    if (Array.isArray(response)) {
+                        setSearchResults(response)
+                    }
+                } else {
+                    console.error("Failed to login user", response);
+                 }
+            })
+            .catch((error) => {
+                console.error("Error logging in:", error);
+            });
         }
     };
 
-    const sendFriendRequest = (user: Friend) => {
-        setSentRequests((prev) => new Set(prev).add(user.fullname));
-        alert(`Friend request sent to ${user.fullname}!`);
+    const sendFriendRequest = (user: User) => {
+        sendFriendsRequest(state.user?.token ?? "", user.id).then((response : GetFriendMessageResponse) => {
+            if (response) {
+                if (response.message == "Friend request sent") {
+                    setSentRequests((prev) => new Set(prev).add(user.id));
+                    alert(`Friend request sent to ${user.fullname}!`);
+                }
+                else if(response.error){
+                    alert(`Friend request failed: ${response.error}!`);
+                }
+                else{
+                    alert(`Friend request failed!`);
+                }
+            } else {
+                console.error("Friend request failed!");
+            }
+        })
+        .catch((error) => {
+            console.error("Friend request failed:", error);
+        });
+    };
+    const acceptFriendRequest = (user: Friend) => {
+        acceptFriendsRequest(state.user?.token ?? "", user.id).then((response : GetFriendMessageResponse) => {
+            if(response.message == "Friend request accepted"){
+                setFriendRequests((prevRequests) => prevRequests.filter((friend) => friend.id !== user.id));
+            }else{
+                alert(`Accepted Friend Request error: ${response.error}!`);
+            }
+            
+         })
+        .catch((error) => { });
+    };
+    const declineFriendRequest = (user: Friend) => {
+        declineFriendsRequest(state.user?.token ?? "", user.id).then((response : GetFriendMessageResponse) => {
+            if(response.message == "Friend request declined"){
+                setFriendRequests((prevRequests) => prevRequests.filter((friend) => friend.id !== user.id));
+            }else{
+                alert(`Declined Friend Request error: ${response.error}!`);
+            }
+         })
+        .catch((error) => { });
     };
 
     return (
@@ -120,7 +161,7 @@ const ProfilePage: React.FC = () => {
                                     {(friends ?? []).map((friend) => (
                                         <li key={friend.fullname} className={styles.friendItem}>
                                             <img src={profilePic} alt="Friend" className={styles.friendImg} />
-                                            {friend.fullname}
+                                            {friend.fullname}({friend.email})
                                         </li>
                                     ))}
                                 </ul>
@@ -135,10 +176,10 @@ const ProfilePage: React.FC = () => {
                                     {(friendRequests ?? []).map((friendRequests) => (
                                         <li className={`${styles.friendItem} d-flex align-items-center`}>
                                         <img key={friendRequests.fullname} src={profilePic} alt="Friend" className={styles.friendImg} />
-                                        {friendRequests.fullname}
+                                        {friendRequests.fullname}({friendRequests.email})
                                         <div className={styles.friendActions}>
-                                            <button className="btn btn-success btn-sm">✔</button>
-                                            <button className="btn btn-danger btn-sm">✖</button>
+                                            <button className="btn btn-success btn-sm" onClick={() => acceptFriendRequest(friendRequests)}>✔</button>
+                                            <button className="btn btn-danger btn-sm" onClick={() => declineFriendRequest(friendRequests)}>✖</button>
                                         </div>
                                     </li>
                                     ))}
@@ -160,15 +201,15 @@ const ProfilePage: React.FC = () => {
                         {searchResults.length > 0 && (
                             <div className={styles.searchResults}>
                                 {searchResults.map((user) => (
-                                    <div key={user.fullname} className={`${styles.friendItem} d-flex align-items-center`}>
+                                    <div key={user.id} className={`${styles.friendItem} d-flex align-items-center`}>
                                         <img src={profilePic} alt="User" className={styles.friendImg} />
-                                        {user.fullname}
+                                        {user.fullname}({user.email})
                                         <button
                                             className="btn btn-primary btn-sm ml-2"
                                             onClick={() => sendFriendRequest(user)}
-                                            disabled={sentRequests.has(user.fullname)}
+                                            disabled={sentRequests.has(user.id)}
                                         >
-                                            {sentRequests.has(user.fullname) ? "Request Sent" : "Send Request"}
+                                            {sentRequests.has(user.id) ? "Request Sent" : "Send Request"}
                                         </button>
                                     </div>
                                 ))}

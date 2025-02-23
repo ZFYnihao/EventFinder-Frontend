@@ -2,16 +2,16 @@ import { GoogleLogin, googleLogout, GoogleOAuthProvider } from "@react-oauth/goo
 import { jwtDecode } from "jwt-decode";
 import { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.css'
-import { User } from "../types/User";
+import { UserData } from "../types/User";
 import { useInfo } from "../UserInfo";
 import { addUsers } from "../api/UserApi"
 
 function Login() {
     const CLIENT_ID = "790798869250-lbundcmheeg71b2cs1c03aa31fb9174h.apps.googleusercontent.com";
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<UserData | null>(null);
     const { dispatch } = useInfo();
 
-    const handleLogin = async (userData: User, token: string) => {
+    const handleLogin = async (userData: UserData, token: string) => {
         setUser(userData);
         dispatch({ type: "LOGIN", payload: userData });
         addUsers(token).then((response) => {
@@ -47,10 +47,10 @@ function Login() {
                     <GoogleLogin
                         onSuccess={(credentialResponse) => {
                             const token = credentialResponse.credential ?? "";
-                            const decoded: Partial<User> = jwtDecode(token!) as Partial<User>;
+                            const decoded: Partial<UserData> = jwtDecode(token!) as Partial<UserData>;
 
                             if (decoded.email && decoded.email.endsWith("@ucsd.edu")) {
-                                const userData: User = {
+                                const userData: UserData = {
                                     given_name: decoded.given_name ?? "",
                                     family_name: decoded.family_name ?? "",
                                     name: decoded.name ?? "",
