@@ -1,39 +1,140 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ProfilePage.module.css";
 import profilePic from "../assets/ProfilePic.png";
-import { Link } from "react-router-dom";
 import { useInfo } from "../UserInfo";
-import { Friend } from "../types/Friend";
-import { mockFriends, mockUsers } from "../api/MockProfileData";
+import { Friend, GetFriendMessageResponse } from "../types/Friend";
+import { getFriends, getFriendsRequest, sendFriendsRequest, acceptFriendsRequest, declineFriendsRequest, deleteFriend } from "../api/FriendApi";
+import { getUsers } from "../api/UserApi";
+import { User } from "../types/User";
 
 const ProfilePage: React.FC = () => {
     const { state } = useInfo();
-    console.log(state);
-    const friends: Array<Friend> = mockFriends;
+    const [friends, setFriends] = useState<Array<Friend>>([]);
+    const [friendRequests, setFriendRequests] = useState<Array<Friend>>([]);
+    const [refreshTrigger, setRefreshTrigger] = useState(false);
+    console.log(state)
+    useEffect(() => {
+        const fetchFriends = async () => {
+            if (!state.user?.token) {
+                console.warn("Token is missing. Skipping API call.");
+                return;
+            }
+    
+            try {
+                const response = await getFriends(state.user.token);
+                if (Array.isArray(response.friends)) {
+                    setFriends(response.friends);
+                } else {
+                    console.error("Unexpected response format:", response);
+                    setFriends([]); 
+                }
+            } catch (error) {
+                console.error("Failed to get friends:", error);
+                setFriends([]);
+            }
+        };
+
+        const fetchFriendRequests = async () => {
+            if (!state.user?.token) {
+                console.warn("Token is missing. Skipping API call.");
+                return;
+            }
+    
+            try {
+                const response = await getFriendsRequest(state.user.token);
+                if (Array.isArray(response.friendRequests)) {
+                    setFriendRequests(response.friendRequests);
+                } else {
+                    console.error("Unexpected response format:", response);
+                    setFriendRequests([]); 
+                }
+            } catch (error) {
+                console.error("Failed to get friend requests:", error);
+                setFriendRequests([]);
+            }
+        };
+    
+        fetchFriends();
+        fetchFriendRequests();
+    }, [state.user?.token, refreshTrigger]); 
 
     const [searchQuery, setSearchQuery] = useState<string>("");
-    const [searchResults, setSearchResults] = useState<Array<Friend>>([]);
-    const [sentRequests, setSentRequests] = useState<Set<string>>(new Set());
+    const [searchResults, setSearchResults] = useState<Array<User>>([]);
+    const [sentRequests, setSentRequests] = useState<Set<number>>(new Set());
 
     const handleSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
-            console.log(searchQuery)
-            if (searchQuery.trim() === "") {
-                setSearchResults([]); 
-                return;
+            if (searchQuery == ""){
+                setSearchResults([]);
+            }else{
+                getUsers(searchQuery, state.user?.token ?? "").then((response: Array<User>) => {
+                    if (Array.isArray(response)) {
+                        setSearchResults(response);
+                    } else {
+                        console.error("Unexpected response:", response);
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error fetching users:", error);
+                });
             }
-            const results = mockUsers.filter((user) =>
-                user.name.toLowerCase().includes(searchQuery.toLowerCase())
-            );
-            console.log(results)
-            setSearchResults(results);
         }
     };
 
-    const sendFriendRequest = (user: Friend) => {
-        setSentRequests((prev) => new Set(prev).add(user.name));
-        alert(`Friend request sent to ${user.name}!`);
+    const sendFriendRequest = (user: User) => {
+        sendFriendsRequest(state.user?.token ?? "", user.id).then((response: GetFriendMessageResponse) => {
+            if (response.message === "Friend request sent") {
+                setSentRequests((prev) => new Set(prev).add(user.id));
+                alert(`Friend request sent to ${user.fullname}!`);
+            } else {
+                alert(`Friend request failed: ${response.error || "Unknown error"}!`);
+            }
+        })
+        .catch((error) => {
+            console.error("Friend request failed:", error);
+        });
     };
+
+    const acceptFriendRequest = (user: Friend) => {
+        console.log("user.id")
+        console.log(user.id)
+        acceptFriendsRequest(state.user?.token ?? "", user.id).then((response: GetFriendMessageResponse) => {
+            if (response.message === "Friend request accepted") {
+                setRefreshTrigger((prev) => !prev); 
+            } else {
+                alert(`Accepted Friend Request error: ${response.error}!`);
+            }
+        })
+        .catch((error) => {
+            console.error("Accept Friend Request Error:", error);
+        });
+    };
+
+    const declineFriendRequest = (user: Friend) => {
+        declineFriendsRequest(state.user?.token ?? "", user.id).then((response: GetFriendMessageResponse) => {
+            if (response.message === "Friend request declined") {
+                setRefreshTrigger((prev) => !prev); 
+            } else {
+                alert(`Declined Friend Request error: ${response.error}!`);
+            }
+        })
+        .catch((error) => {
+            console.error("Decline Friend Request Error:", error);
+        });
+    };
+
+    const removeFriend = (user : Friend) => {
+        deleteFriend(state.user?.token ?? "", user.id).then((response: GetFriendMessageResponse) => {
+            if (response.message === "Friend removed") {
+                setRefreshTrigger((prev) => !prev); 
+            } else {
+                alert(`Remove Friend error: ${response.error}!`);
+            }
+        })
+        .catch((error) => {
+            console.error("Remove Friend Error:", error);
+        });
+    }
 
     return (
         <div className={styles.profileWrapper}>
@@ -43,19 +144,12 @@ const ProfilePage: React.FC = () => {
             <div className={styles.profileContainer}>
                 {/* Left part: User Information */}
                 <div className={styles.profileHeader}>
-                    <img src={profilePic} alt="Profile" className={styles.profileImg} />
-                    <h3>John Doe</h3>
-                    <p className="text-muted">jdoe@ucsd.edu</p>
-
+                    <img src={state.user?.picture || profilePic} alt="Profile" className={styles.profileImg} referrerPolicy="no-referrer"/>
+                    <h3>{state.user?.name}</h3>
+                    <p className="text-muted">{state.user?.email}</p>
                     <p className="mb-5" style={{ color: "#e672d0", fontSize: "1.2rem", fontWeight: "bold" }}>
-                        ##1 Friends
+                        {friends.length} Friends
                     </p>
-
-                    <button className="btn btn-primary">
-                        <Link to="/admin-management" className="text-white text-decoration-none">
-                            Admin Event Management
-                        </Link>
-                    </button>
                 </div>
 
                 {/* Right part: Friends & Requests */}
@@ -67,9 +161,12 @@ const ProfilePage: React.FC = () => {
                             <div className={styles.friendsList}>
                                 <ul className="list-unstyled">
                                     {friends.map((friend) => (
-                                        <li key={friend.name} className={styles.friendItem}>
+                                        <li key={friend.id} className={styles.friendItem}>
                                             <img src={profilePic} alt="Friend" className={styles.friendImg} />
-                                            {friend.name}
+                                            {friend.fullname} ({friend.email})
+                                            <div>
+                                            <button className="btn btn-danger btn-sm" onClick={() => removeFriend(friend)}>-</button>
+                                            </div>
                                         </li>
                                     ))}
                                 </ul>
@@ -81,22 +178,16 @@ const ProfilePage: React.FC = () => {
                             <h4>Pending Requests:</h4>
                             <div className={styles.pendingRequestsList}>
                                 <ul className="list-unstyled">
-                                    <li className={`${styles.friendItem} d-flex align-items-center`}>
-                                        <img src={profilePic} alt="Friend" className={styles.friendImg} />
-                                        Jan Doe 5
-                                        <div className={styles.friendActions}>
-                                            <button className="btn btn-success btn-sm">✔</button>
-                                            <button className="btn btn-danger btn-sm">✖</button>
-                                        </div>
-                                    </li>
-                                    <li className={`${styles.friendItem} d-flex align-items-center`}>
-                                        <img src={profilePic} alt="Friend" className={styles.friendImg} />
-                                        Jan Doe 6
-                                        <div className={styles.friendActions}>
-                                            <button className="btn btn-success btn-sm">✔</button>
-                                            <button className="btn btn-danger btn-sm">✖</button>
-                                        </div>
-                                    </li>
+                                    {friendRequests.map((friend) => (
+                                        <li key={friend.id} className={`${styles.friendItem} d-flex align-items-center`}>
+                                            <img src={profilePic} alt="Friend" className={styles.friendImg} />
+                                            {friend.fullname} ({friend.email})
+                                            <div className={styles.friendActions}>
+                                                <button className="btn btn-success btn-sm" onClick={() => acceptFriendRequest(friend)}>✔</button>
+                                                <button className="btn btn-danger btn-sm" onClick={() => declineFriendRequest(friend)}>✖</button>
+                                            </div>
+                                        </li>
+                                    ))}
                                 </ul>
                             </div>
                         </div>
@@ -115,15 +206,15 @@ const ProfilePage: React.FC = () => {
                         {searchResults.length > 0 && (
                             <div className={styles.searchResults}>
                                 {searchResults.map((user) => (
-                                    <div key={user.name} className={`${styles.friendItem} d-flex align-items-center`}>
+                                    <div key={user.id} className={`${styles.friendItem} d-flex align-items-center`}>
                                         <img src={profilePic} alt="User" className={styles.friendImg} />
-                                        {user.name}
+                                        {user.fullname}({user.email})
                                         <button
                                             className="btn btn-primary btn-sm ml-2"
                                             onClick={() => sendFriendRequest(user)}
-                                            disabled={sentRequests.has(user.name)}
+                                            disabled={sentRequests.has(user.id)}
                                         >
-                                            {sentRequests.has(user.name) ? "Request Sent" : "Send Request"}
+                                            {sentRequests.has(user.id) ? "Request Sent" : "Send Request"}
                                         </button>
                                     </div>
                                 ))}
