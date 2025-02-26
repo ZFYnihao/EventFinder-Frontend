@@ -36,8 +36,16 @@
   
   .table-container {
     border-radius: 10px;
-    overflow: hidden;
+    overflow-y: auto;
     border: 1px solid #ccc;
+    margin-top: 20px;
+    max-height: 450px;
+  }
+  .event-table thead {
+    position: sticky;
+    top: 0;
+    background-color: #f2f2f2; /* Optional: change the background color of the header */
+    z-index: 1; /* Ensures the header stays on top of the scrollable body */
   }
   
   .event-table {
