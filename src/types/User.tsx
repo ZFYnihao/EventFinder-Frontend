@@ -5,6 +5,7 @@ export interface UserData {
     email: string;
     token: string;
     picture: string;
+    is_admin: boolean;
 }
 
 export interface User {
