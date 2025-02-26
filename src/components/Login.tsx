@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import { UserData } from "../types/User";
 import { useInfo } from "../UserInfo";
 import { addUsers } from "../api/UserApi"
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
     const CLIENT_ID = "790798869250-lbundcmheeg71b2cs1c03aa31fb9174h.apps.googleusercontent.com";
@@ -43,7 +43,11 @@ function Login() {
             <div className="d-flex justify-content-center align-items-center flex-column">
                 {state.isLogin ? (
                     <div className="d-flex align-items-center justify-content-between">
-                    <p className="mb-0 me-3">Welcome, {state.user?.name}</p>
+                    <p className="mb-0 me-3">Welcome, 
+                        <Link to="/profile" className="text-primary" style={{ textDecoration: "none", fontWeight: "bold" }}>
+                            {state.user?.name}
+                        </Link>
+                    </p>
                     <button className="btn btn-secondary" onClick={handleLogout}>Logout</button>
                 </div>
                 ) : (
