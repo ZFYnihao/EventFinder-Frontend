@@ -105,6 +105,7 @@ const AllEventPage: React.FC = () => {
                 <div className={`list-group-item ${styles.eventHeader}`}>
                     <span className={styles.eventName}>Event Name</span>
                     <span className={styles.eventDate}>Start Date</span>
+                    <span className={styles.eventDate}>End Date</span>
                     <span className={styles.eventAttendees}># Attending</span>
                 </div>
 
@@ -117,6 +118,7 @@ const AllEventPage: React.FC = () => {
                                     {event.name}
                                 </Link>
                                 <span className={styles.eventDate}>{formatDate(event.startDateTime)}</span>
+                                <span className={styles.eventDate}>{formatDate(event.endDateTime)}</span>
                                 <span className={`badge bg-danger ${styles.eventAttendees} ${styles.attendanceBadge}`}>
                                     {event.attendees} Attending
                                 </span>
