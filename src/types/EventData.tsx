@@ -7,6 +7,7 @@ export interface EventDataInterface {
     
     startDateTime: string;
     endDateTime: string;
+    date: string
     time: string;
     location: string[];
     friends: Friend[];
