@@ -8,6 +8,7 @@ import AllEventPage from "./components/AllEventPage";
 
 import EventDetailsPage from "./components/EventDetailsPage"
 import AdminEventManagement from "./components/AdminEventManagement"
+import AdminApplyPage from "./components/AdminApplyPage";
 
 import { UserProvider } from "./UserInfo";
 
@@ -23,6 +24,7 @@ function App() {
               <Route path="/all-events" element={<AllEventPage />} />
               <Route path="/event/:id" element={<EventDetailsPage />} />
               <Route path="/admin" element={<AdminEventManagement />} />
+              <Route path="/admin-apply" element={<AdminApplyPage />} />
             </Routes>
           </div>
       </BrowserRouter>
