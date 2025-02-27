@@ -5,11 +5,13 @@ import 'bootstrap/dist/css/bootstrap.css'
 import { UserData } from "../types/User";
 import { useInfo } from "../UserInfo";
 import { addUsers } from "../api/UserApi"
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
     const CLIENT_ID = "790798869250-lbundcmheeg71b2cs1c03aa31fb9174h.apps.googleusercontent.com";
-    const [user, setUser] = useState<UserData | null>(null);
-    const { dispatch } = useInfo();
+    const [_, setUser] = useState<UserData | null>(null);
+    const { dispatch, state } = useInfo();
+    const navigate = useNavigate();
 
     const handleLogin = async (userData: UserData, token: string) => {
         setUser(userData);
@@ -32,15 +34,20 @@ function Login() {
     const handleLogout = () => {
         googleLogout();
         setUser(null);
-        console.log("User logged out");
+        dispatch({ type: "LOGOUT"});
+        navigate("/");
     };
 
     return (
         <GoogleOAuthProvider clientId={CLIENT_ID}>
             <div className="d-flex justify-content-center align-items-center flex-column">
-                {user ? (
+                {state.isLogin ? (
                     <div className="d-flex align-items-center justify-content-between">
-                    <p className="mb-0 me-3">Welcome, {user.name}</p>
+                    <p className="mb-0 me-3">Welcome, 
+                        <Link to="/profile" className="text-primary" style={{ textDecoration: "none", fontWeight: "bold" }}>
+                            {state.user?.name}
+                        </Link>
+                    </p>
                     <button className="btn btn-secondary" onClick={handleLogout}>Logout</button>
                 </div>
                 ) : (
@@ -57,6 +64,7 @@ function Login() {
                                     email: decoded.email ?? "",
                                     token: token ?? "",
                                     picture: decoded.picture??"",
+                                    is_admin: true,
                                 };
                                 handleLogin(userData, token);
                             } else {

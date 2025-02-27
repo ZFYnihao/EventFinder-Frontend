@@ -3,6 +3,7 @@ import { UserData } from "./types/User"
 
 interface UserState {
   user: UserData | null;
+  isLogin: boolean;
 }
 
 type UserAction =
@@ -15,17 +16,17 @@ const authReducer = (state: UserState, action: UserAction): UserState => {
   switch (action.type) {
     case "LOGIN":
       localStorage.setItem("user", JSON.stringify(action.payload));
-      return { user: action.payload };
+      return { user: action.payload, isLogin: true };
     case "LOGOUT":
       localStorage.removeItem("user");
-      return { user: null };
+      return { user: null, isLogin: false };
     default:
       return state;
   }
 };
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-  const [state, dispatch] = useReducer(authReducer, { user: null });
+  const [state, dispatch] = useReducer(authReducer, { user: null, isLogin: false });
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");

@@ -12,7 +12,11 @@ const ProfilePage: React.FC = () => {
     const [friends, setFriends] = useState<Array<Friend>>([]);
     const [friendRequests, setFriendRequests] = useState<Array<Friend>>([]);
     const [refreshTrigger, setRefreshTrigger] = useState(false);
-    console.log(state)
+
+    if (!state.isLogin) {
+        return <h2>Access Denied. Please log in to view this page.</h2>;
+    }
+    
     useEffect(() => {
         const fetchFriends = async () => {
             if (!state.user?.token) {
