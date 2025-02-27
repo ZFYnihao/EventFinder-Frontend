@@ -3,6 +3,18 @@ import { useNavigate } from "react-router-dom";
 import "./AdminEventManagement.css";
 import { mockEvents } from "../api/MockEventData"; 
 
+
+//Function to format date
+const formatDate = (inputDate: string):string => {
+  const date = new Date(inputDate);
+  const month = String(date.getMonth() + 1).padStart(2, '0'); 
+  const day = String(date.getDate()).padStart(2, '0');
+  const year = date.getFullYear();
+
+  return `${month}/${day}/${year}`;
+};
+
+
 const EventManagement = () => {
   const navigate = useNavigate();
 
@@ -33,7 +45,7 @@ const EventManagement = () => {
               <tr key={event.id}>
                 {/* <td>{event.id}</td> */}
                 <td>{event.name}</td>
-                <td>{event.date}</td>
+                <td>{formatDate(event.startDateTime)}</td>
                 <td className="action-buttons">
                   <button className="action-button">Update</button>
                   <button className="action-button">Delete</button>
