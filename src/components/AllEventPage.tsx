@@ -4,6 +4,23 @@ import { mockEvents } from "../api/MockEventData";
 import styles from "./AllEventPage.module.css"; 
 import { EventDataInterface } from "../types/EventData";
 
+// Function to format date
+const formatDate = (inputDate: string): string => {
+    const date = new Date(inputDate);
+    const month = String(date.getMonth() + 1).padStart(2, '0'); 
+    const day = String(date.getDate()).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${month}/${day}/${year}`;
+};
+
+
+
+
+
+
+
+
+
 const AllEventPage: React.FC = () => {
     const [events, setEvents] = useState<EventDataInterface[]>([]);
     const [searchText, setSearchText] = useState("");
@@ -17,10 +34,10 @@ const AllEventPage: React.FC = () => {
     // sort logic
     const filteredEvents = events.filter(event => 
         event.name.toLowerCase().includes(searchText.toLowerCase()) &&
-        (filterDate === "" || event.date === filterDate)
+        (filterDate === "" ||new Date(event.startDateTime.replace(" ", "T")).toISOString().split("T")[0] === filterDate)  //change the format for date
     ).sort((a, b) => {
         if (sortKey === "name") return a.name.localeCompare(b.name);
-        if (sortKey === "date") return a.date.localeCompare(b.date);
+        if (sortKey === "date") return new Date(a.startDateTime).getTime() - new Date(b.startDateTime).getTime();
         return b.attendees - a.attendees;
     });
 
@@ -75,7 +92,7 @@ const AllEventPage: React.FC = () => {
                                 <Link to={`/event/${event.id}`} className={`text-primary fw-bold text-decoration-none ${styles.eventName}`}>
                                     {event.name}
                                 </Link>
-                                <span className={styles.eventDate}>{event.date}</span>
+                                <span className={styles.eventDate}>{formatDate(event.startDateTime)}</span>
                                 <span className={`badge bg-danger ${styles.eventAttendees} ${styles.attendanceBadge}`}>
                                     {event.attendees} Attending
                                 </span>
