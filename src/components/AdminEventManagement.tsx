@@ -52,7 +52,7 @@ const EventManagement = () => {
                 <td>{event.name}</td>
                 <td>{formatDate(event.startDateTime)}</td>
                 <td className="action-buttons">
-                  <button className="action-button">
+                  <button className="action-button" onClick={() => navigate(`/update-event/${event.id}`)}>
                     Update <img src="src/assets/edit_icon.png" alt="Edit icon" className="button-icon" /> 
                   </button>
                   <button 

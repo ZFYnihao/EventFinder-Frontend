@@ -4,7 +4,8 @@ import { mockEvents } from "../api/MockEventData";
 import { EventDataInterface } from "../types/EventData";
 import { Friend } from "../types/Friend";
 import profilePic from "../assets/ProfilePic.png";
-import styles from "./EventDetailsPage.module.css"; 
+import styles from "./EventDetailsPage.module.css";
+
 
 	
 const EventDetailsPage: React.FC = () => {
