@@ -124,7 +124,7 @@ const UpdateEventPage: React.FC = () => {
 						<h3>Name:</h3>
 					</div>
 					<div className="col-md-8">
-					<input type="text" id="name" name="name" value={currentEvent.name} placeholder="Name" minLength={4}/>
+					<input type="text" id="name" name="name" defaultValue={currentEvent.name} placeholder="Name" minLength={4}/>
 					</div>
 				</div>
 				{/* Description Input */}
@@ -133,7 +133,7 @@ const UpdateEventPage: React.FC = () => {
 						<h3>Description:</h3>
 					</div>
 					<div className="col-md-8">
-						<textarea className={`${styles.desc}`} id="desc" name="desc" value={currentEvent.desc} placeholder="Description" minLength={25} cols={90}></textarea>
+						<textarea className={`${styles.desc}`} id="desc" name="desc" defaultValue={currentEvent.desc} placeholder="Description" minLength={25} cols={90}></textarea>
 					</div>
 				</div>
 				{/* Registration Link Input */}
@@ -142,7 +142,7 @@ const UpdateEventPage: React.FC = () => {
 						<h3>Registration Link (Optional):</h3>
 					</div>
 					<div className="col-md-8">
-						<input type="url" id="reglink" name="reglink" value={currentEvent.regLink} placeholder="Link"/>
+						<input type="url" id="reglink" name="reglink" defaultValue={currentEvent.regLink} placeholder="Link"/>
 					</div>
 				</div>
 				{/* Start Date Time Input */}
@@ -151,7 +151,7 @@ const UpdateEventPage: React.FC = () => {
 						<h3>Start Date and Time:</h3>
 					</div>
 					<div className="col-md-8">
-						<input type="datetime-local" id="startdatetime" name="startdatetime" value={currentEvent.startDateTime} min={(new Date()).toISOString().substring(0,16)}/>
+						<input type="datetime-local" id="startdatetime" name="startdatetime" defaultValue={currentEvent.startDateTime} min={(new Date()).toISOString().substring(0,16)}/>
 					</div>
 				</div>
 				{/* End Date Time nput */}
@@ -160,7 +160,7 @@ const UpdateEventPage: React.FC = () => {
 						<h3>End Date and Time:</h3>
 					</div>
 					<div className="col-md-8">
-						<input type="datetime-local" id="enddatetime" name="enddatetime" value={currentEvent.endDateTime} min={(new Date()).toISOString().substring(0,16)}/>
+						<input type="datetime-local" id="enddatetime" name="enddatetime" defaultValue={currentEvent.endDateTime} min={(new Date()).toISOString().substring(0,16)}/>
 					</div>
 				</div>
 				{/* Location (Street, City, State) Input */}
@@ -171,20 +171,20 @@ const UpdateEventPage: React.FC = () => {
 					<div className="col-md-8">
 						<div className="row">
 							<div className="col-md-6">
-								<input type="text" id="street" placeholder="Street" value={currentAddress[0]}/>
+								<input type="text" id="street" placeholder="Street" defaultValue={currentAddress[0]}/>
 							</div>
 							<div className="col-md-3">
-								<input type="text" id="city" placeholder="City" value={currentAddress[1]}/>
+								<input type="text" id="city" placeholder="City" defaultValue={currentAddress[1]}/>
 							</div>
 							<div className="col-md-3">
-								<input type="text" id="state" placeholder="State" value={currentAddress[2]}/>
+								<input type="text" id="state" placeholder="State" defaultValue={currentAddress[2]}/>
 							</div>
 						</div>
 					</div>
 				</div>
-				{/* Create Event Button */}
+				{/* Update Event Button */}
 				<div className={`${styles.buttonDiv} row`}>
-					<button className="rounded" id="update" onClick={updateEvent}>Create Event</button>
+					<button className="rounded" id="update" onClick={updateEvent}>Update Event</button>
 				</div>
 			</div>
 		</main>

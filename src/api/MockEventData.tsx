@@ -21,7 +21,7 @@ export const mockEvents = [
       id: 3, name: "Sample Event 3",  
       desc: "Join us for a fun-filled evening of food and music.",
       regLink: "http://example.com/register3",
-      startDateTime: "2025-02-2218:00:00", endDateTime: "2025-02-22 21:00:00", 
+      startDateTime: "2025-02-22 18:00:00", endDateTime: "2025-02-22 21:00:00", 
       address: "789 Fun Ave, Music City, Country",
       hostId: 3,
       attendees: 30
