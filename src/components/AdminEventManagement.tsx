@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import "./AdminEventManagement.css";
 import { mockEvents } from "../api/MockEventData"; 
+import { useInfo } from "../UserInfo";
 
 // Function to format date
 const formatDate = (inputDate: string): string => {
@@ -14,6 +15,10 @@ const formatDate = (inputDate: string): string => {
 
 const EventManagement = () => {
   const navigate = useNavigate();
+  const { state } = useInfo();
+  if (!state.user?.is_admin) {
+    return <h2>Access Denied. You do not have permission to access this page.</h2>;
+  }
 
   // Function to handle event deletion with a confirmation prompt
   const handleDelete = (eventId: number, eventName: string) => {
