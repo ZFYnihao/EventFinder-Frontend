@@ -4,7 +4,7 @@ export const mockEvents = [
       desc: "This is a sample event for testing purposes.",
       regLink: "http://example.com/register",
       startDateTime: "2025-02-20 10:00:00", endDateTime: "2025-02-20 12:00:00", 
-      address: ["123 Sample St", "Sample City", "Country"],
+      address: "123 Sample St, Sample City, Country",
       hostId: 1 ,
       attendees: 5
   },
@@ -13,7 +13,7 @@ export const mockEvents = [
       desc: "This event is for business networking and skill sharing.",
       regLink: "http://example.com/register2",
       startDateTime: "2025-02-21 14:00:00", endDateTime: "2025-02-21 16:00:00", 
-      address: ["456 Event St", "Business City", "Country"],
+      address: "456 Event St, Business City, Country",
       hostId: 2,
       attendees: 10
   },
@@ -22,7 +22,7 @@ export const mockEvents = [
       desc: "Join us for a fun-filled evening of food and music.",
       regLink: "http://example.com/register3",
       startDateTime: "2025-02-22 18:00:00", endDateTime: "2025-02-22 21:00:00", 
-      address: ["789 Fun Ave", "Music City", "Country"],
+      address: "789 Fun Ave, Music City, Country",
       hostId: 3,
       attendees: 30
   },
@@ -31,7 +31,7 @@ export const mockEvents = [
       desc: "A conference on technology and innovation.",
       regLink: "http://example.com/register4",
       startDateTime: "2025-02-23 09:00:00", endDateTime: "2025-02-23 17:00:00", 
-      address: ["101 Tech Park", "Innovation City", "Country"],
+      address: "101 Tech Park, Innovation City, Country",
       hostId: 4,
       attendees: 100
   },
@@ -40,7 +40,7 @@ export const mockEvents = [
       desc: "A marathon to promote health and fitness.",
       regLink: "http://example.com/register5",
       startDateTime: "2025-02-24 07:00:00", endDateTime: "2025-02-27 12:00:00", 
-      address: ["202 Fitness Rd", "Sport City", "Country"],
+      address: "202 Fitness Rd, Sport City, Country",
       hostId: 5,
       attendees: 80
   },
@@ -49,7 +49,7 @@ export const mockEvents = [
       desc: "Art exhibition showcasing local artists.",
       regLink: "http://example.com/register6",
       startDateTime: "2025-02-24 15:00:00", endDateTime: "2025-03-02 19:00:00", 
-      address: ["303 Art Gallery", "Creative City", "Country"],
+      address: "303 Art Gallery, Creative City, Country",
       hostId: 6,
       attendees: 111
   },
@@ -58,7 +58,7 @@ export const mockEvents = [
       desc: "Workshop on digital marketing strategies.",
       regLink: "http://example.com/register7",
       startDateTime: "2025-02-12 11:00:00", endDateTime: "2025-02-28 13:00:00", 
-      address: ["404 Marketing Blvd", "Business City", "Country"],
+      address: "404 Marketing Blvd, Business City, Country",
       hostId: 7,
       attendees: 82
   },
@@ -67,7 +67,7 @@ export const mockEvents = [
       desc: "Music festival with international performers.",
       regLink: "http://example.com/register8",
       startDateTime: "2025-02-27 12:00:00", endDateTime: "2025-02-27 22:00:00", 
-      address: ["505 Festival Park", "Music City", "Country"],
+      address: "505 Festival Park, Music City, Country",
       hostId: 8,
       attendees: 120
   },
@@ -76,7 +76,7 @@ export const mockEvents = [
       desc: "Cooking class for beginners in the kitchen.",
       regLink: "http://example.com/register9",
       startDateTime: "2025-02-28 14:00:00", endDateTime: "2025-02-28 17:00:00", 
-      address: ["606 Culinary St", "Food City", "Country"],
+      address: "606 Culinary St, Food City, Country",
       hostId: 9,
       attendees: 99
   },
@@ -85,7 +85,7 @@ export const mockEvents = [
       desc: "Yoga and wellness retreat for relaxation.",
       regLink: "http://example.com/register10",
       startDateTime: "2025-03-01 08:00:00", endDateTime: "2025-03-01 11:00:00", 
-      address: ["707 Wellness Way", "Health City", "Country"],
+      address: "707 Wellness Way, Health City, Country",
       hostId: 10,
       attendees: 6
   },
@@ -94,7 +94,7 @@ export const mockEvents = [
       desc: "Food tasting event showcasing local cuisine.",
       regLink: "http://example.com/register11",
       startDateTime: "2025-03-02 16:00:00", endDateTime: "2025-03-02 19:00:00", 
-      address: ["808 Taste Blvd", "Food City", "Country"],
+      address: "808 Taste Blvd, Food City, Country",
       hostId: 11,
       attendees: 93
   },
@@ -103,7 +103,7 @@ export const mockEvents = [
       desc: "Charity auction for local community projects.",
       regLink: "http://example.com/register12",
       startDateTime: "2025-03-03 18:00:00", endDateTime: "2025-03-03 21:00:00", 
-      address: ["909 Charity St", "Giving City", "Country"],
+      address: "909 Charity St, Giving City, Country",
       hostId: 12,
       attendees: 32
   },
@@ -112,7 +112,7 @@ export const mockEvents = [
       desc: "Tech startup competition for aspiring entrepreneurs.",
       regLink: "http://example.com/register13",
       startDateTime: "2025-03-04 10:00:00", endDateTime: "2025-03-04 16:00:00", 
-      address: ["1010 Startup Park", "Innovation City", "Country"],
+      address: "1010 Startup Park, Innovation City, Country",
       hostId: 13,
       attendees: 44
   },
@@ -121,7 +121,7 @@ export const mockEvents = [
       desc: "Photography exhibition by renowned artists.",
       regLink: "http://example.com/register14",
       startDateTime: "2025-03-05 17:00:00", endDateTime: "2025-03-05 20:00:00", 
-      address: ["1111 Photography Lane", "Creative City", "Country"],
+      address: "1111 Photography Lane, Creative City, Country",
       hostId: 14,
       attendees: 39
   },
@@ -130,7 +130,7 @@ export const mockEvents = [
       desc: "Career fair for recent graduates and job seekers.",
       regLink: "http://example.com/register15",
       startDateTime: "2025-03-06 09:00:00", endDateTime: "2025-03-06 13:00:00", 
-      address: ["1212 Career Blvd", "Job City", "Country"],
+      address: "1212 Career Blvd, Job City, Country",
       hostId: 15,
       attendees: 93
   }
