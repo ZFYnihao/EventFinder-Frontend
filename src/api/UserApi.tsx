@@ -1,10 +1,10 @@
 import axios, { AxiosResponse } from "axios";
-import { User } from "../types/User";
+import { User, AddUserResponse } from "../types/User";
 
 const BASE_URL = "http://127.0.0.1:8000/user";
 
-export async function addUsers(token : string): Promise<User[]> {
-  const response: AxiosResponse<User[]> = await axios.post(`${BASE_URL}/add`, null, {
+export async function addUsers(token : string): Promise<AddUserResponse> {
+  const response: AxiosResponse<AddUserResponse> = await axios.post(`${BASE_URL}/add`, null, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,

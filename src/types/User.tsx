@@ -13,3 +13,9 @@ export interface User {
     fullname: string;
     email: string;
 }
+
+export interface AddUserResponse {
+    fullname: string;
+    email: string;
+    isAdmin: boolean;
+}
