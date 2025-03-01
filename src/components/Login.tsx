@@ -1,7 +1,7 @@
 import { GoogleLogin, googleLogout, GoogleOAuthProvider } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import 'bootstrap/dist/css/bootstrap.css'
-import { UserData } from "../types/User";
+import { AddUserResponse, UserData } from "../types/User";
 import { useInfo } from "../UserInfo";
 import { addUsers } from "../api/UserApi"
 
@@ -11,10 +11,11 @@ function Login() {
 
     const handleLogin = async (userData: UserData, token: string) => {
         dispatch({ type: "LOGIN", payload: userData });
-        addUsers(token).then((response) => {
+        addUsers(token).then((response : AddUserResponse) => {
             if (response) {
                 console.log(token)
                 console.log("User logged in:", userData);
+                userData.is_admin = response.isAdmin
                 dispatch({ type: "LOGIN", payload: userData });
             } else {
                 console.error("Failed to login user", response);
