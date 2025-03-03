@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import "./AdminEventManagement.css";
-import { mockEvents } from "../api/MockEventData"; 
 import { useInfo } from "../UserInfo";
+import { getAdminEvent, getAdminEventAttendees, deleteEvent } from "../api/EventApi"
+import { useEffect, useState } from "react";
+import { Event, GetAdminEventResponse } from "../types/Event";
 
 // Function to format date
 const formatDate = (inputDate: string): string => {
@@ -16,19 +18,75 @@ const formatDate = (inputDate: string): string => {
 const EventManagement = () => {
   const navigate = useNavigate();
   const { state } = useInfo();
+  const [events, setEvents] = useState<Array<Event>>([]);
+  const [refreshTrigger, setRefreshTrigger] = useState(false);
+  const token = state.user? state.user.token : "";
+
+  useEffect(() => {
+          const fetchAdminEvent = async () => {
+              if (!state.user?.token) {
+                  console.warn("Token is missing. Skipping API call.");
+                  return;
+              }
+      
+              try {
+                  const response : GetAdminEventResponse = await getAdminEvent(state.user.token);
+                  if (Array.isArray(response.events)) {
+                      setEvents(response.events);
+                  } else {
+                      console.error("Unexpected response format:", response);
+                      setEvents([]); 
+                  }
+              } catch (error) {
+                  console.error("Failed to get admin event:", error);
+                  setEvents([]);
+              }
+          };
+  
+          fetchAdminEvent();
+      }, [state.user?.token, refreshTrigger]); 
+
+  // Function to handle event deletion with a confirmation prompt
+  const handleDelete = async (eventId: number | null, eventName: string) => {
+    const confirmed = window.confirm(`Are you sure you want to delete the event "${eventName}"?`);
+    if (confirmed) {
+      //Placeholder for delete API call
+      //window.location.reload()
+      try {
+        await deleteEvent(token, eventId); 
+        setRefreshTrigger((prev) => !prev); 
+      } catch (error) {
+        console.error("Delete event failed:", error);
+      } 
+    }
+  };
+  const handleDownloadCsv = async (eventId: number | null, eventName: string) => {
+    if (!state.user?.token) {
+      console.warn("Token is missing. Skipping CSV download.");
+      return;
+    }
+
+    try {
+      const csvBlob = await getAdminEventAttendees(state.user.token, eventId);
+
+      const csvUrl = window.URL.createObjectURL(csvBlob);
+
+      const link = document.createElement("a");
+      link.href = csvUrl;
+      link.setAttribute("download", `${eventName}_attendees.csv`);
+      document.body.appendChild(link);
+      link.click();
+
+      link.remove();
+      window.URL.revokeObjectURL(csvUrl);
+    } catch (error) {
+      console.error("Failed to download CSV:", error);
+    }
+  };
+
   if (!state.user?.is_admin) {
     return <h2>Access Denied. You do not have permission to access this page.</h2>;
   }
-
-  // Function to handle event deletion with a confirmation prompt
-  const handleDelete = (eventId: number, eventName: string) => {
-    const confirmed = window.confirm(`Are you sure you want to delete the event "${eventName}"?`);
-  
-    if (confirmed) {
-      //Placeholder for delete API call
-      window.location.reload()
-    }
-  };
 
   return (
     <div className="container">
@@ -52,12 +110,12 @@ const EventManagement = () => {
             </tr>
           </thead>
           <tbody>
-            {mockEvents.map((event) => (
+            {events.map((event) => (
               <tr key={event.id}>
                 <td>{event.name}</td>
-                <td>{formatDate(event.startDateTime)}</td>
+                <td>{formatDate(event.startdatetime)}</td>
                 <td className="action-buttons">
-                  <button className="action-button" onClick={() => navigate(`/update-event/${event.id}`)}>
+                  <button className="action-button" onClick={() => navigate(`/update-event`, { state: { event: event } })}>
                     Update <img src="src/assets/edit_icon.png" alt="Edit icon" className="button-icon" /> 
                   </button>
                   <button 
@@ -66,7 +124,10 @@ const EventManagement = () => {
                   >
                     Delete <img src="src/assets/delete_icon.png" alt="Delete icon" className="button-icon" /> 
                   </button>
-                  <button className="action-button">
+                  <button 
+                    className="action-button"
+                    onClick={() => handleDownloadCsv(event.id, event.name)}
+                  >
                     Download Registrations <img src="src/assets/download_icon.png" alt="Download icon" className="button-icon" /> 
                   </button>
                 </td>

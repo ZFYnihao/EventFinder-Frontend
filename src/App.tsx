@@ -28,7 +28,7 @@ function App() {
               <Route path="/admin" element={<AdminEventManagement />} />
               <Route path="/admin-apply" element={<AdminApplyPage />} />
               <Route path="/create-event" element={<CreateEventPage />} />
-              <Route path="/update-event/:id" element={<UpdateEventPage />} />
+              <Route path="/update-event" element={<UpdateEventPage />} />
             </Routes>
           </div>
       </BrowserRouter>
