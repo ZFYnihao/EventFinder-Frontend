@@ -1,0 +1,48 @@
+.createEvent {
+	padding-top: 2%;
+	padding-right: 12%;
+	padding-left: 12%;
+	display: flex;
+  	align-items: center;
+  	justify-content: center;
+	flex-direction: column;
+}
+
+.createEvent div{
+	padding: 0.5% 0.5% 0.5% 0.5%;
+}
+
+.createEvent h1{
+	text-align: center;
+}
+
+.createEvent h3{
+	font-size: 1.2rem;
+}
+
+.createEvent input {
+	font-size: medium;
+}
+
+.createEvent input[type="url"] {
+	width: 100%;
+}
+
+.desc {
+	width: 100%;
+	min-height: 100%;
+	max-height: 100%;
+}
+
+.createEvent button {
+	width: 20vw;
+	background-color: #2F3061;
+	color: white;
+}
+
+.buttonDiv {
+	display: flex;
+  	justify-content: center;
+	align-items: center;
+	text-align: center;
+}

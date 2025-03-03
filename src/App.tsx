@@ -7,6 +7,10 @@ import ProfilePage from "./components/ProfilePage";
 import AllEventPage from "./components/AllEventPage";
 
 import EventDetailsPage from "./components/EventDetailsPage"
+import AdminEventManagement from "./components/AdminEventManagement"
+import AdminApplyPage from "./components/AdminApplyPage";
+import CreateEventPage from "./components/CreateEventPage";
+import UpdateEventPage from "./components/UpdateEventPage";
 
 import { UserProvider } from "./UserInfo";
 
@@ -21,6 +25,10 @@ function App() {
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/all-events" element={<AllEventPage />} />
               <Route path="/event/:id" element={<EventDetailsPage />} />
+              <Route path="/admin" element={<AdminEventManagement />} />
+              <Route path="/admin-apply" element={<AdminApplyPage />} />
+              <Route path="/create-event" element={<CreateEventPage />} />
+              <Route path="/update-event" element={<UpdateEventPage />} />
             </Routes>
           </div>
       </BrowserRouter>

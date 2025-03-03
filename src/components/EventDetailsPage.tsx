@@ -1,10 +1,11 @@
 import { useParams } from 'react-router-dom';
 import React, { useEffect, useState } from "react";
 import { mockEvents } from "../api/MockEventData"; 
-import { EventDataInterface } from "../types/EventData";
+import { EventDataInterface } from "../types/Event";
 import { Friend } from "../types/Friend";
 import profilePic from "../assets/ProfilePic.png";
-import styles from "./EventDetailsPage.module.css"; 
+import styles from "./EventDetailsPage.module.css";
+
 
 	
 const EventDetailsPage: React.FC = () => {
@@ -25,23 +26,24 @@ const EventDetailsPage: React.FC = () => {
     		</main>
 		);
 	}
-	const friends: Array<Friend> = currentEvent.friends;
+	// const friends: Array<Friend> = currentEvent.friends;
+	const friends: Array<Friend> = [];
 	// get event location or array with first string saying no location provided if no location
-	const location = currentEvent.location.length > 0 ? currentEvent.location : ["No location provided", "", ""]
+	const location = currentEvent.address.length > 0 ? currentEvent.address : ["No location provided", "", ""]
 	// display event details if event with that id exists
 	return (
 	<main className="d-flex flex-column p-4" style={{ height: 'calc(100vh - 64px)' }}>
 		{/* display title and host */}
 		<div className={`${styles.titleDiv} row justify-content-center text-center`}>
 			<h3>{currentEvent.name}</h3>
-			<h5>Posted by {currentEvent.host}</h5>
+			<h5>Posted by {currentEvent.hostId}</h5>
 		</div>
 		<hr></hr>
 		<div className={`${styles.titleDiv} row`}>
 			{/* display description of event */}
 			<div className={`${styles.descriptionDiv} col-md-9`}>
 				<h5>Description</h5>
-				<p>{currentEvent.description}</p>
+				<p>{currentEvent.desc}</p>
 			</div>
 			{/* display other info about event*/}
 			<div className="col-md-3">
@@ -52,7 +54,7 @@ const EventDetailsPage: React.FC = () => {
 							<img src="../src/assets/time-icon.png" alt="Location Icon"></img>
 						</div>
 						<div className="col-md-10">
-							<p>{currentEvent.date}<br></br>{currentEvent.time}</p>
+							<p>{currentEvent.startDateTime}<br></br>{currentEvent.endDateTime}</p>
 
 						</div>
 					</div>
@@ -77,9 +79,9 @@ const EventDetailsPage: React.FC = () => {
 					<div className={styles.friendsList}>
 						<ul className="list-unstyled">
 							{friends.map((friend) => (
-								<li key={friend.name} className={styles.friendItem}>
+								<li key={friend.fullname} className={styles.friendItem}>
 									<img src={profilePic} alt="Friend" className={styles.friendImg} />
-										{friend.name}
+										{friend.fullname}
 								</li>
 							))}
 						</ul>

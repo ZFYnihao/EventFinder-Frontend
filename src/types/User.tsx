@@ -5,10 +5,17 @@ export interface UserData {
     email: string;
     token: string;
     picture: string;
+    is_admin: boolean;
 }
 
 export interface User {
     id: number;
     fullname: string;
     email: string;
+}
+
+export interface AddUserResponse {
+    fullname: string;
+    email: string;
+    isAdmin: boolean;
 }
