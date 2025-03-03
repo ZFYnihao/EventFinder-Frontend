@@ -29,7 +29,7 @@ const CreateEventPage: React.FC = () => {
 			id : null,
 			name: name.value,
 			desc: desc.value,
-			regLink: reglink.value,
+			reglink: reglink.value,
 			startdatetime: startdatetime.value,
 			enddatetime: enddatetime.value,
 			address: address,

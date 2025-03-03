@@ -47,7 +47,7 @@ const UpdateEventPage: React.FC = () => {
 			id : events.id,
 			name: name.value,
 			desc: desc.value,
-			regLink: reglink.value,
+			reglink: reglink.value,
 			startdatetime: startdatetime.value,
 			enddatetime: enddatetime.value,
 			address: address,
@@ -148,7 +148,7 @@ const UpdateEventPage: React.FC = () => {
 						<h3>Registration Link (Optional):</h3>
 					</div>
 					<div className="col-md-8">
-						<input type="url" id="reglink" name="reglink" defaultValue={events.regLink} placeholder="Link"/>
+						<input type="url" id="reglink" name="reglink" defaultValue={events.reglink} placeholder="Link"/>
 					</div>
 				</div>
 				{/* Start Date Time Input */}

@@ -15,7 +15,7 @@ export interface Event {
   id: number | null;
   name: string;
   desc: string;
-  regLink: string;
+  reglink: string;
   startdatetime: string;
   enddatetime: string;
   address: string;
