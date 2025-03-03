@@ -56,9 +56,13 @@ const UpdateEventPage: React.FC = () => {
 		// send an alert saying the event is updated
 		// ADD EVENT TO DATABASE LATER
 		if (validateEvent(name, desc, reglink, startdatetime, enddatetime, street, city, state)) {
-			updateEvent(token, events.id, changedEvent)
-			alert(`Event Named ${name.value} Updated`)
-			alert(JSON.stringify(changedEvent))
+			updateEvent(token, events.id, changedEvent).then((response : Event) => {
+				if (response){
+					alert(`Event Named ${name.value} Updated`)
+				}
+			}).catch((error) => {
+				console.error("update event error:", error);
+			});
 			window.location.href = "/admin";
 		}
 	}

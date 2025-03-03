@@ -39,9 +39,13 @@ const CreateEventPage: React.FC = () => {
 		// ADD EVENT TO DATABASE LATER
 		if (validateEvent(name, desc, reglink, startdatetime, enddatetime, street, city, state)) {
 			console.log(newEvent);
-			createEvent(token, newEvent)
-			alert(`Event Named ${name.value} Created`)
-			alert(JSON.stringify(newEvent))
+			createEvent(token, newEvent).then((response : Event) => {
+				if (response){
+					alert(`Event Named ${name.value} Created`)
+				}
+			}).catch((error) => {
+				console.error("create event error:", error);
+			});
 			window.location.href = "/admin";
 		}
 	}
