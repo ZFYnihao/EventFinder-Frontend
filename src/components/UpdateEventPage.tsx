@@ -1,22 +1,21 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import styles from "./CreateUpdateEventPage.module.css";
 import "./CreateUpdateEventPage.module.css";
 import React, { useEffect, useState } from "react";
-import { mockEvents } from "../api/MockEventData";
-import { EventDataInterface } from "../types/EventData";
+import { Event } from "../types/Event";
+import { updateEvent } from "../api/EventApi"
+import { useInfo } from "../UserInfo";
 
 const UpdateEventPage: React.FC = () => {
-	const { id } = useParams();
-	const [events, setEvents] = useState<EventDataInterface[]>([]);
-	useEffect(() => {
-			setEvents(mockEvents);
-	}, []);
-	// convert id to number if it is a number
-	const eventID = id ? parseInt(id, 10) : NaN;
-	const currentEvent = events.find(event => event.id == eventID);
-	
+	const location = useLocation();
+	const event = location.state?.event;
+	const [events, setEvents] = useState<Event>(event);
+	const { state } = useInfo();
+	const token = state.user? state.user.token : "";
+	const userEmail = state.user? state.user.email : "";
+	console.log(events)
 	// check if the event exists, if not, display a statement saying this
-	if (currentEvent == undefined) {
+	if (events == undefined) {
 		return (
 			<main>
       			<h1>This event does not exist or you do not have permission to edit this event. Please return to the 'All Events' page.</h1>
@@ -24,13 +23,13 @@ const UpdateEventPage: React.FC = () => {
 		);
 	}
 	// split address into three component parts
-	const currentAddress = (currentEvent.address as string).split(", ")
+	const currentAddress = events.address ? (events.address as string).split(", ") : "";
 
 	
 
 	// updates the event and returns to event management page if the inputs are all valid (calls validateEvent)
 	// CURRENTLY NOT CONNECTED TO BACKEND, ONLY SENDS AN ALERT WITH EVENT INFO
-	function updateEvent() {
+	function updateEventHandle() {
 		// get input elements
 		const name = (document.getElementById("name") as HTMLInputElement)
 		const desc = (document.getElementById("desc") as HTMLTextAreaElement)
@@ -44,17 +43,20 @@ const UpdateEventPage: React.FC = () => {
 		const address = `${street.value}, ${city.value}, ${state.value}`
 		// creates a const of event data to display in alert
 		// FOR TESTING, MAYBE NOT NEEDED AFTER CONNECTED TO BACKEND
-		const changedEvent = {
+		const changedEvent : Event = {
+			id : events.id,
 			name: name.value,
 			desc: desc.value,
-			reglink: reglink.value,
+			regLink: reglink.value,
 			startdatetime: startdatetime.value,
 			enddatetime: enddatetime.value,
-			address: address
+			address: address,
+			hostId: userEmail
 		};
 		// send an alert saying the event is updated
 		// ADD EVENT TO DATABASE LATER
 		if (validateEvent(name, desc, reglink, startdatetime, enddatetime, street, city, state)) {
+			updateEvent(token, events.id, changedEvent)
 			alert(`Event Named ${name.value} Updated`)
 			alert(JSON.stringify(changedEvent))
 			window.location.href = "/admin";
@@ -124,7 +126,7 @@ const UpdateEventPage: React.FC = () => {
 						<h3>Name:</h3>
 					</div>
 					<div className="col-md-8">
-					<input type="text" id="name" name="name" defaultValue={currentEvent.name} placeholder="Name" minLength={4}/>
+					<input type="text" id="name" name="name" defaultValue={events.name} placeholder="Name" minLength={4}/>
 					</div>
 				</div>
 				{/* Description Input */}
@@ -133,7 +135,7 @@ const UpdateEventPage: React.FC = () => {
 						<h3>Description:</h3>
 					</div>
 					<div className="col-md-8">
-						<textarea className={`${styles.desc}`} id="desc" name="desc" defaultValue={currentEvent.desc} placeholder="Description" minLength={25} cols={90}></textarea>
+						<textarea className={`${styles.desc}`} id="desc" name="desc" defaultValue={events.desc} placeholder="Description" minLength={25} cols={90}></textarea>
 					</div>
 				</div>
 				{/* Registration Link Input */}
@@ -142,7 +144,7 @@ const UpdateEventPage: React.FC = () => {
 						<h3>Registration Link (Optional):</h3>
 					</div>
 					<div className="col-md-8">
-						<input type="url" id="reglink" name="reglink" defaultValue={currentEvent.regLink} placeholder="Link"/>
+						<input type="url" id="reglink" name="reglink" defaultValue={events.regLink} placeholder="Link"/>
 					</div>
 				</div>
 				{/* Start Date Time Input */}
@@ -151,7 +153,7 @@ const UpdateEventPage: React.FC = () => {
 						<h3>Start Date and Time:</h3>
 					</div>
 					<div className="col-md-8">
-						<input type="datetime-local" id="startdatetime" name="startdatetime" defaultValue={currentEvent.startDateTime} min={(new Date()).toISOString().substring(0,16)}/>
+						<input type="datetime-local" id="startdatetime" name="startdatetime" defaultValue={events.startdatetime} min={(new Date()).toISOString().substring(0,16)}/>
 					</div>
 				</div>
 				{/* End Date Time nput */}
@@ -160,7 +162,7 @@ const UpdateEventPage: React.FC = () => {
 						<h3>End Date and Time:</h3>
 					</div>
 					<div className="col-md-8">
-						<input type="datetime-local" id="enddatetime" name="enddatetime" defaultValue={currentEvent.endDateTime} min={(new Date()).toISOString().substring(0,16)}/>
+						<input type="datetime-local" id="enddatetime" name="enddatetime" defaultValue={events.enddatetime} min={(new Date()).toISOString().substring(0,16)}/>
 					</div>
 				</div>
 				{/* Location (Street, City, State) Input */}
@@ -184,7 +186,7 @@ const UpdateEventPage: React.FC = () => {
 				</div>
 				{/* Update Event Button */}
 				<div className={`${styles.buttonDiv} row`}>
-					<button className="rounded" id="update" onClick={updateEvent}>Update Event</button>
+					<button className="rounded" id="update" onClick={updateEventHandle}>Update Event</button>
 				</div>
 			</div>
 		</main>

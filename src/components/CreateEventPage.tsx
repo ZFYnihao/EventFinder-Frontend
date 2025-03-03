@@ -1,11 +1,17 @@
 import styles from "./CreateUpdateEventPage.module.css";
 import "./CreateUpdateEventPage.module.css";
+import { createEvent } from "../api/EventApi"
+import { useInfo } from "../UserInfo";
+import { Event } from "../types/Event";
 
 const CreateEventPage: React.FC = () => {
+	const { state } = useInfo();
+	const token = state.user? state.user.token : "";
+	const userEmail = state.user? state.user.email : "";
 
 	// creates the event and returns to event management page if the inputs are all valid (calls validateEvent)
 	// CURRENTLY NOT CONNECTED TO BACKEND, ONLY SENDS AN ALERT WITH EVENT INFO
-	function createEvent() {
+	function createEventHandle() {
 		// get input elements
 		const name = (document.getElementById("name") as HTMLInputElement)
 		const desc = (document.getElementById("desc") as HTMLTextAreaElement)
@@ -19,17 +25,21 @@ const CreateEventPage: React.FC = () => {
 		const address = `${street.value}, ${city.value}, ${state.value}`
 		// creates a const of event data to display in alert
 		// FOR TESTING, MAYBE NOT NEEDED AFTER CONNECTED TO BACKEND
-		const newEvent = {
+		const newEvent : Event = {
+			id : null,
 			name: name.value,
 			desc: desc.value,
-			reglink: reglink.value,
+			regLink: reglink.value,
 			startdatetime: startdatetime.value,
 			enddatetime: enddatetime.value,
-			address: address
+			address: address,
+			hostId: userEmail
 		};
 		// send an alert saying the event is created
 		// ADD EVENT TO DATABASE LATER
 		if (validateEvent(name, desc, reglink, startdatetime, enddatetime, street, city, state)) {
+			console.log(newEvent);
+			createEvent(token, newEvent)
 			alert(`Event Named ${name.value} Created`)
 			alert(JSON.stringify(newEvent))
 			window.location.href = "/admin";
@@ -159,7 +169,7 @@ const CreateEventPage: React.FC = () => {
 				</div>
 				{/* Create Event Button */}
 				<div className={`${styles.buttonDiv} row`}>
-					<button className="rounded" id="create" onClick={createEvent}>Create Event</button>
+					<button className="rounded" id="create" onClick={createEventHandle}>Create Event</button>
 				</div>
 			</div>
 		</main>

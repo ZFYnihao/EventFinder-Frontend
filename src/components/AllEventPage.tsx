@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { mockEvents } from "../api/MockEventData"; 
 import styles from "./AllEventPage.module.css"; 
-import { EventDataInterface } from "../types/EventData";
+import { EventDataInterface } from "../types/Event";
 
 // Function to format date
 const formatDate = (inputDate: string): string => {

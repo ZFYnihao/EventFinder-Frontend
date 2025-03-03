@@ -15,7 +15,9 @@ function Login() {
             if (response) {
                 console.log(token)
                 console.log("User logged in:", userData);
-                userData.is_admin = response.isAdmin
+                if (response.isAdmin){
+                    userData.is_admin = response.isAdmin
+                }
                 dispatch({ type: "LOGIN", payload: userData });
             } else {
                 console.error("Failed to login user", response);

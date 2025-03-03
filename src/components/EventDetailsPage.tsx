@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import React, { useEffect, useState } from "react";
 import { mockEvents } from "../api/MockEventData"; 
-import { EventDataInterface } from "../types/EventData";
+import { EventDataInterface } from "../types/Event";
 import { Friend } from "../types/Friend";
 import profilePic from "../assets/ProfilePic.png";
 import styles from "./EventDetailsPage.module.css";
