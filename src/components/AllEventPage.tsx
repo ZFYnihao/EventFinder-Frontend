@@ -117,7 +117,9 @@ const AllEventPage: React.FC = () => {
                                 <Link to={`/event/${event.id}`} className={`text-primary fw-bold text-decoration-none ${styles.eventName}`}>
                                     {event.name}
                                 </Link>
-                                <span className={styles.eventDate}>{formatDate(event.startDateTime)}</span>
+                                <span data-testid="event-start-date" className={styles.eventDate}>
+                                    {formatDate(event.startDateTime)}
+                                </span>
                                 <span className={styles.eventDate}>{formatDate(event.endDateTime)}</span>
                                 <span className={`badge bg-danger ${styles.eventAttendees} ${styles.attendanceBadge}`}>
                                     {event.attendees} Attending
