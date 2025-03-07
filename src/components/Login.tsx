@@ -4,9 +4,10 @@ import 'bootstrap/dist/css/bootstrap.css'
 import { AddUserResponse, UserData } from "../types/User";
 import { useInfo } from "../UserInfo";
 import { addUsers } from "../api/UserApi"
+const clientId = import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID;
 
 function Login() {
-    const CLIENT_ID = "790798869250-lbundcmheeg71b2cs1c03aa31fb9174h.apps.googleusercontent.com";
+    const CLIENT_ID = clientId;
     const { dispatch } = useInfo();
 
     const handleLogin = async (userData: UserData, token: string) => {
