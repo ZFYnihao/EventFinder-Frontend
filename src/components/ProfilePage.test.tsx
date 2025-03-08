@@ -50,8 +50,8 @@ describe('ProfilePage', () => {
   });
 
   it('fetches friends and friend requests on mount', async () => {
-    getFriends.mockResolvedValue({ friends: [{ id: 1, fullname: 'Friend 1', email: 'friend1@example.com' }] });
-    getFriendsRequest.mockResolvedValue({ friendRequests: [{ id: 2, fullname: 'Friend Request 1', email: 'friendrequest1@example.com' }] });
+    (getFriends as jest.Mock).mockResolvedValue({ friends: [{ id: 1, fullname: 'Friend 1', email: 'friend1@example.com' }] });
+    (getFriendsRequest as jest.Mock).mockResolvedValue({ friendRequests: [{ id: 2, fullname: 'Friend Request 1', email: 'friendrequest1@example.com' }] });
     
     render(<ProfilePage />);
 
@@ -62,7 +62,7 @@ describe('ProfilePage', () => {
   });
 
   it('searches for users and displays results', async () => {
-    getUsers.mockResolvedValue([{ id: 3, fullname: 'User 3', email: 'user3@example.com' }]);
+    (getUsers as jest.Mock).mockResolvedValue([{ id: 3, fullname: 'User 3', email: 'user3@example.com' }]);
     
     render(<ProfilePage />);
     
@@ -77,8 +77,8 @@ describe('ProfilePage', () => {
 
   it('sends a friend request when clicked', async () => {
     // Mocking the API response
-    sendFriendsRequest.mockResolvedValue({ message: 'Friend request sent' });
-    getUsers.mockResolvedValue([{ id: 3, fullname: 'User 3', email: 'user3@example.com' }]);
+    (sendFriendsRequest as jest.Mock).mockResolvedValue({ message: 'Friend request sent' });
+    (getUsers as jest.Mock).mockResolvedValue([{ id: 3, fullname: 'User 3', email: 'user3@example.com' }]);
     
     render(<ProfilePage />);
   
@@ -112,7 +112,7 @@ describe('ProfilePage', () => {
   });
   
   it('accepts a friend request', async () => {
-    acceptFriendsRequest.mockResolvedValue({ message: 'Friend request accepted' });
+    (acceptFriendsRequest as jest.Mock).mockResolvedValue({ message: 'Friend request accepted' });
 
     render(<ProfilePage />);
 
@@ -125,7 +125,7 @@ describe('ProfilePage', () => {
   });
 
   it('declines a friend request', async () => {
-    declineFriendsRequest.mockResolvedValue({ message: 'Friend request declined' });
+    (declineFriendsRequest as jest.Mock).mockResolvedValue({ message: 'Friend request declined' });
 
     render(<ProfilePage />);
 
@@ -138,7 +138,7 @@ describe('ProfilePage', () => {
   });
 
   it('removes a friend', async () => {
-    deleteFriend.mockResolvedValue({ message: 'Friend removed' });
+    (deleteFriend as jest.Mock).mockResolvedValue({ message: 'Friend removed' });
     
     render(<ProfilePage />);
 

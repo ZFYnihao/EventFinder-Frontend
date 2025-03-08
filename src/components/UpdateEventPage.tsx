@@ -1,7 +1,7 @@
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import styles from "./CreateUpdateEventPage.module.css";
 import "./CreateUpdateEventPage.module.css";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Event } from "../types/Event";
 import { updateEvent } from "../api/EventApi"
 import { useInfo } from "../UserInfo";

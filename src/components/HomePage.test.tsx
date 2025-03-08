@@ -9,7 +9,7 @@ jest.mock("../UserInfo", () => ({
 
 describe("MainPage Component", () => {
   test("renders login prompt when user is not logged in", () => {
-    useInfo.mockReturnValue({ state: { isLogin: false } });
+    (useInfo as jest.Mock).mockReturnValue({ state: { isLogin: false } });
     render(
       <MemoryRouter>
         <MainPage />
@@ -22,7 +22,7 @@ describe("MainPage Component", () => {
 
 
   test("shows profile link when user is logged in", () => {
-    useInfo.mockReturnValue({ state: { isLogin: true, user: { name: "Gokul" } } });
+    (useInfo as jest.Mock).mockReturnValue({ state: { isLogin: true, user: { name: "Name" } } });
     render(
       <MemoryRouter>
         <MainPage />

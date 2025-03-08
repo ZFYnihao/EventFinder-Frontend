@@ -23,7 +23,7 @@ describe('EventManagement', () => {
     (useInfo as jest.Mock).mockReturnValue({
       state: { user: { token: 'mockToken', is_admin: true } },
     });
-    getAdminEvent.mockResolvedValue({ events: mockEvents });
+    (getAdminEvent as jest.Mock).mockResolvedValue({ events: mockEvents });
   });
 
   it('renders the component and fetches events', async () => {
@@ -41,7 +41,7 @@ describe('EventManagement', () => {
   });
 
   it('shows access denied message for non-admin users', () => {
-    useInfo.mockReturnValue({
+    (useInfo as jest.Mock).mockReturnValue({
       state: { user: { is_admin: false } },
     });
 
@@ -56,7 +56,7 @@ describe('EventManagement', () => {
 
   it('handles event deletion', async () => {
     window.confirm = jest.fn(() => true);
-    deleteEvent.mockResolvedValue({});
+    (deleteEvent as jest.Mock).mockResolvedValue({});
 
     render(
       <BrowserRouter>
@@ -74,7 +74,7 @@ describe('EventManagement', () => {
 
   it('handles CSV download', async () => {
     const mockBlob = new Blob(['mock,csv,data'], { type: 'text/csv' });
-    getAdminEventAttendees.mockResolvedValue(mockBlob);
+    (getAdminEventAttendees as jest.Mock).mockResolvedValue(mockBlob);
 
     render(
       <BrowserRouter>
