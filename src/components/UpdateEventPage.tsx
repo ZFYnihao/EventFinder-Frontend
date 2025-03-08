@@ -9,7 +9,7 @@ import { useInfo } from "../UserInfo";
 const UpdateEventPage: React.FC = () => {
 	const location = useLocation();
 	const event = location.state?.event;
-	const [events, setEvents] = useState<Event>(event);
+	const [events] = useState<Event>(event);
 	const { state } = useInfo();
 	const token = state.user? state.user.token : "";
 	const userEmail = state.user? state.user.email : "";
