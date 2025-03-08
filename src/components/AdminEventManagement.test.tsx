@@ -1,4 +1,4 @@
-import React from 'react';
+import '@testing-library/jest-dom'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import EventManagement from './AdminEventManagement';
@@ -20,7 +20,7 @@ const mockEvents = [
 
 describe('EventManagement', () => {
   beforeEach(() => {
-    useInfo.mockReturnValue({
+    (useInfo as jest.Mock).mockReturnValue({
       state: { user: { token: 'mockToken', is_admin: true } },
     });
     getAdminEvent.mockResolvedValue({ events: mockEvents });

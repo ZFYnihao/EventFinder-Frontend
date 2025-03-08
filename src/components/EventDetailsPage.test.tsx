@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import '@testing-library/jest-dom'
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import EventDetailsPage from "../components/EventDetailsPage";
 import { mockEvents } from "../api/MockEventData";
