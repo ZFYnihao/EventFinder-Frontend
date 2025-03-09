@@ -67,3 +67,14 @@ export async function getAllEvents(token: string): Promise<GetEventsResponse> {
   });
   return response.data;
 }
+
+export async function registerEvent(token: string, eventId: number | null): Promise<GetEventMessageResponse> {
+  const req = {event_id: eventId}
+  const response: AxiosResponse<GetEventMessageResponse> = await axios.post(`${BASE_URL}/register`, req, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`, 
+    },
+  });
+  return response.data;
+}
