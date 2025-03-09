@@ -57,3 +57,15 @@ export async function deleteEvent(token : string, eventId: number | null): Promi
       })
     return response.data;
 }
+
+
+
+//all event page:
+export async function getAllEvents(): Promise<Event[]> {
+  const response: AxiosResponse<Event[]> = await axios.get(`${BASE_URL}/all`, {
+      headers: {
+          "Content-Type": "application/json",
+      },
+  });
+  return response.data;
+}

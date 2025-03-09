@@ -11,6 +11,8 @@ function Login() {
 
     const handleLogin = async (userData: UserData, token: string) => {
         dispatch({ type: "LOGIN", payload: userData });
+        console.log(token)
+        console.log(userData)
         addUsers(token).then((response : AddUserResponse) => {
             if (response) {
                 console.log(token)
