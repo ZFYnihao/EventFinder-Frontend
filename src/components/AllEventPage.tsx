@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { mockEvents } from "../api/MockEventData"; 
+//import { mockEvents } from "../api/MockEventData"; 
 import styles from "./AllEventPage.module.css"; 
-import { EventDataInterface } from "../types/Event";
+import { Event } from "../types/Event";
+
+
+import { getAllEvents } from "../api/EventApi"; // Connect to EventApi
+
+import { useInfo } from "../UserInfo"; // get user info
 
 // Function to format date
 const formatDate = (inputDate: string): string => {
@@ -17,25 +22,65 @@ const formatDate = (inputDate: string): string => {
 
 
 
+interface ExtendedEvent extends Event {
+    attendees: number; //set for attendees
+  }
+  
+
 
 
 
 
 const AllEventPage: React.FC = () => {
-    const [events, setEvents] = useState<EventDataInterface[]>([]);
+    const [events, setEvents] = useState<ExtendedEvent[]>([]);
     const [searchText, setSearchText] = useState("");
     const [filterStartDate, setFilterStartDate] = useState<string>("");
     const [filterEndDate, setFilterEndDate] = useState<string>("");
     const [sortKey, setSortKey] = useState<"name" | "date" | "attendees">("name");
 
+    //for user information:
+    const { state } = useInfo();
+    const token = state.user?.token || "";
+
+    //useEffect(() => {
+        //setEvents(mockEvents);
+    //}, []);
+
     useEffect(() => {
-        setEvents(mockEvents);
-    }, []);
+        const fetchEvents = async () => {
+          try {
+            const response = await getAllEvents(token); // Event[]
+            console.log("Fetched events here!!!:", response);
+      
+            // array here
+            if (Array.isArray(response.events)) {
+                const withAttendees = response.events.map(evt => ({
+                ...evt,
+                attendees: 0
+                }));
+                console.log("setEvents with attendees 0!!!");
+                setEvents(withAttendees);
+
+            } else {
+                console.error("Unexpected response format:", response);
+                setEvents([]);
+            }
+
+
+          } catch (error) {
+            console.error("Failed to fetch events:", error);
+          }
+        };
+        fetchEvents();
+      }, []);
+
+
+
 
     // filter
     const filteredEvents = events.filter(event => {
-        const eventStartDate = new Date(event.startDateTime.replace(" ", "T")).toISOString().split("T")[0];      //change date format
-        const eventEndDate = new Date(event.endDateTime.replace(" ", "T")).toISOString().split("T")[0];  
+        const eventStartDate = new Date(event.startdatetime.replace(" ", "T")).toISOString().split("T")[0];      //change date format
+        const eventEndDate = new Date(event.enddatetime.replace(" ", "T")).toISOString().split("T")[0];  
     
         return (
             event.name.toLowerCase().includes(searchText.toLowerCase()) &&
@@ -45,7 +90,7 @@ const AllEventPage: React.FC = () => {
 
     }).sort((a, b) => {     //sort
         if (sortKey === "name") return a.name.localeCompare(b.name);
-        if (sortKey === "date") return new Date(a.startDateTime).getTime() - new Date(b.startDateTime).getTime();
+        if (sortKey === "date") return new Date(a.startdatetime).getTime() - new Date(b.startdatetime).getTime();
         return b.attendees - a.attendees;
     });
 
@@ -117,8 +162,8 @@ const AllEventPage: React.FC = () => {
                                 <Link to={`/event/${event.id}`} className={`text-primary fw-bold text-decoration-none ${styles.eventName}`}>
                                     {event.name}
                                 </Link>
-                                <span className={styles.eventDate}>{formatDate(event.startDateTime)}</span>
-                                <span className={styles.eventDate}>{formatDate(event.endDateTime)}</span>
+                                <span className={styles.eventDate}>{formatDate(event.startdatetime)}</span>
+                                <span className={styles.eventDate}>{formatDate(event.enddatetime)}</span>
                                 <span className={`badge bg-danger ${styles.eventAttendees} ${styles.attendanceBadge}`}>
                                     {event.attendees} Attending
                                 </span>

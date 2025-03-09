@@ -22,6 +22,18 @@ export interface Event {
   hostId: string | null;
 }
 
+
+//event get
+export interface GetEventsResponse {
+  events: Event[];  
+}
+
+
+
+
+
+
+
 export interface GetAdminEventResponse {
   events: Array<Event>
 }
