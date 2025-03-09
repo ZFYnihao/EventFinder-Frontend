@@ -23,7 +23,7 @@ const EventDetailsPage: React.FC = () => {
 	const friends: Array<Friend> = [];
 	// get event location or array with first string saying no location provided if no location
 	const location = event.address?.length > 0
-			? event.address
+			? event.address.split(",")
 			: ["No location provided", "", ""];
 	// display event details if event with that id exists
 	return (

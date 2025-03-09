@@ -72,8 +72,8 @@ const AllEventPage: React.FC = () => {
 
         return (
             event.name.toLowerCase().includes(searchText.toLowerCase()) &&
-            (filterStartDate === "" || eventStartDate >= filterStartDate) &&
-            (filterEndDate === "" || eventEndDate <= filterEndDate)
+            (filterStartDate === "" || filterStartDate <= eventEndDate) &&   //date logic,show all satisfy inside
+            (filterEndDate === "" || filterEndDate >= eventStartDate)
         );
     });
 
