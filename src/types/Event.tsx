@@ -8,7 +8,7 @@ export interface Event {
   startdatetime: string;
   enddatetime: string;
   address: string;
-  hostId: string | null;
+  hostid: string | null;
 }
 
 export interface AllEvent extends Event {

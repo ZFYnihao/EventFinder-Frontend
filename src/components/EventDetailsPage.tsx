@@ -31,7 +31,7 @@ const EventDetailsPage: React.FC = () => {
 		{/* display title and host */}
 		<div className={`${styles.titleDiv} row justify-content-center text-center`}>
 			<h3>{event.name}</h3>
-			<h5>Posted by {event.hostId}</h5>
+			<h5>Posted by {event.hostid}</h5>
 		</div>
 		<hr></hr>
 		<div className={`${styles.titleDiv} row`}>
