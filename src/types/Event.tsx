@@ -1,15 +1,4 @@
-
-export interface EventDataInterface {
-    id: number;
-    name: string;
-    desc: string;
-    regLink: string;
-    startDateTime: string;
-    endDateTime: string;
-    address: string;
-    hostId: number;
-    attendees: number;
-}
+import { Friend } from "./Friend";
 
 export interface Event {
   id: number | null;
@@ -22,17 +11,14 @@ export interface Event {
   hostId: string | null;
 }
 
-
-//event get
-export interface GetEventsResponse {
-  events: Event[];  
+export interface AllEvent extends Event {
+  noOfAttendees : number;
+  attendeesFriends : Array<Friend>
 }
 
-
-
-
-
-
+export interface GetEventsResponse {
+  events: Array<AllEvent>
+}
 
 export interface GetAdminEventResponse {
   events: Array<Event>

@@ -1,8 +1,8 @@
 .eventList {
     border-radius: 0.5rem;
-    overflow-y: auto;  
+    /* overflow-y: auto;  
     max-height: 50vh;  
-    min-height: 40vh; 
+    min-height: 40vh;  */
     display: flex;
     flex-direction: column;
 }
