@@ -4,8 +4,8 @@ module.exports = {
       [
         '@babel/preset-react', // For React JSX support
         { "runtime": "automatic" } // For React 17 JSX support
-      ]
-      
+      ],
+      '@babel/preset-typescript'
     ],
   };
   

@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { GetAdminEventResponse, GetEventMessageResponse, Event } from "../types/Event";
+import { GetAdminEventResponse, GetEventMessageResponse, Event ,GetEventsResponse} from "../types/Event";
 
 const BASE_URL = "http://127.0.0.1:8000/event";
 
@@ -56,4 +56,25 @@ export async function deleteEvent(token : string, eventId: number | null): Promi
         },
       })
     return response.data;
+}
+
+export async function getAllEvents(token: string): Promise<GetEventsResponse> {
+  const response: AxiosResponse<GetEventsResponse> = await axios.get(`${BASE_URL}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`, 
+    },
+  });
+  return response.data;
+}
+
+export async function registerEvent(token: string, eventId: number | null): Promise<GetEventMessageResponse> {
+  const req = {event_id: eventId}
+  const response: AxiosResponse<GetEventMessageResponse> = await axios.post(`${BASE_URL}/register`, req, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`, 
+    },
+  });
+  return response.data;
 }

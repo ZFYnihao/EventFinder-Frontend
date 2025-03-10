@@ -115,17 +115,23 @@ const EventManagement = () => {
                 <td>{event.name}</td>
                 <td>{formatDate(event.startdatetime)}</td>
                 <td className="action-buttons">
-                  <button className="action-button" onClick={() => navigate(`/update-event`, { state: { event: event } })}>
+                  <button 
+                    className="action-button" 
+                    data-testid={`update-event-${event.id}`}  
+                    onClick={() => navigate(`/update-event`, { state: { event: event } })}
+                  >
                     Update <img src="src/assets/edit_icon.png" alt="Edit icon" className="button-icon" /> 
                   </button>
                   <button 
                     className="action-button" 
+                    data-testid={`delete-event-${event.id}`}
                     onClick={() => handleDelete(event.id,event.name)}
                   >
                     Delete <img src="src/assets/delete_icon.png" alt="Delete icon" className="button-icon" /> 
                   </button>
                   <button 
                     className="action-button"
+                    data-testid={`download-event-${event.id}`}
                     onClick={() => handleDownloadCsv(event.id, event.name)}
                   >
                     Download Registrations <img src="src/assets/download_icon.png" alt="Download icon" className="button-icon" /> 

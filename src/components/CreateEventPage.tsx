@@ -33,7 +33,7 @@ const CreateEventPage: React.FC = () => {
 			startdatetime: startdatetime.value,
 			enddatetime: enddatetime.value,
 			address: address,
-			hostId: userEmail
+			hostid: userEmail
 		};
 		// send an alert saying the event is created
 		// ADD EVENT TO DATABASE LATER
@@ -140,7 +140,7 @@ const CreateEventPage: React.FC = () => {
 						<h3>Start Date and Time:</h3>
 					</div>
 					<div className="col-md-8">
-						<input type="datetime-local" id="startdatetime" name="startdatetime" min={(new Date()).toISOString().substring(0,16)}/>
+						<input type="datetime-local" data-testid="start" id="startdatetime" name="startdatetime" min={(new Date()).toISOString().substring(0,16)}/>
 					</div>
 				</div>
 				{/* End Date Time nput */}
@@ -149,7 +149,7 @@ const CreateEventPage: React.FC = () => {
 						<h3>End Date and Time:</h3>
 					</div>
 					<div className="col-md-8">
-						<input type="datetime-local" id="enddatetime" name="enddatetime" min={(new Date()).toISOString().substring(0,16)}/>
+						<input type="datetime-local" data-testid="end" id="enddatetime" name="enddatetime" min={(new Date()).toISOString().substring(0,16)}/>
 					</div>
 				</div>
 				{/* Location (Street, City, State) Input */}
@@ -173,7 +173,7 @@ const CreateEventPage: React.FC = () => {
 				</div>
 				{/* Create Event Button */}
 				<div className={`${styles.buttonDiv} row`}>
-					<button className="rounded" id="create" onClick={createEventHandle}>Create Event</button>
+					<button className="rounded" data-testid="create-event" id="create" onClick={createEventHandle}>Create Event</button>
 				</div>
 			</div>
 		</main>

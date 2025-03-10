@@ -24,7 +24,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/all-events" element={<AllEventPage />} />
-              <Route path="/event/:id" element={<EventDetailsPage />} />
+              <Route path="/event-detail" element={<EventDetailsPage />} />
               <Route path="/admin" element={<AdminEventManagement />} />
               <Route path="/admin-apply" element={<AdminApplyPage />} />
               <Route path="/create-event" element={<CreateEventPage />} />

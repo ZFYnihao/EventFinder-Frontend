@@ -1,7 +1,7 @@
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import styles from "./CreateUpdateEventPage.module.css";
 import "./CreateUpdateEventPage.module.css";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Event } from "../types/Event";
 import { updateEvent } from "../api/EventApi"
 import { useInfo } from "../UserInfo";
@@ -9,7 +9,7 @@ import { useInfo } from "../UserInfo";
 const UpdateEventPage: React.FC = () => {
 	const location = useLocation();
 	const event = location.state?.event;
-	const [events, setEvents] = useState<Event>(event);
+	const [events] = useState<Event>(event);
 	const { state } = useInfo();
 	const token = state.user? state.user.token : "";
 	const userEmail = state.user? state.user.email : "";
@@ -157,7 +157,7 @@ const UpdateEventPage: React.FC = () => {
 						<h3>Start Date and Time:</h3>
 					</div>
 					<div className="col-md-8">
-						<input type="datetime-local" id="startdatetime" name="startdatetime" defaultValue={events.startdatetime} min={(new Date()).toISOString().substring(0,16)}/>
+						<input type="datetime-local" data-testid="start" id="startdatetime" name="startdatetime" defaultValue={events.startdatetime} min={(new Date()).toISOString().substring(0,16)}/>
 					</div>
 				</div>
 				{/* End Date Time nput */}
@@ -166,7 +166,7 @@ const UpdateEventPage: React.FC = () => {
 						<h3>End Date and Time:</h3>
 					</div>
 					<div className="col-md-8">
-						<input type="datetime-local" id="enddatetime" name="enddatetime" defaultValue={events.enddatetime} min={(new Date()).toISOString().substring(0,16)}/>
+						<input type="datetime-local" data-testid="end" id="enddatetime" name="enddatetime" defaultValue={events.enddatetime} min={(new Date()).toISOString().substring(0,16)}/>
 					</div>
 				</div>
 				{/* Location (Street, City, State) Input */}
@@ -190,7 +190,7 @@ const UpdateEventPage: React.FC = () => {
 				</div>
 				{/* Update Event Button */}
 				<div className={`${styles.buttonDiv} row`}>
-					<button className="rounded" id="update" onClick={updateEventHandle}>Update Event</button>
+					<button className="rounded" data-testid="update-event" id="update" onClick={updateEventHandle}>Update Event</button>
 				</div>
 			</div>
 		</main>
