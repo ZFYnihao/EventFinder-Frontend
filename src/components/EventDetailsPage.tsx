@@ -1,15 +1,19 @@
 import { useLocation } from 'react-router-dom';
 import React from "react";
-import { AllEvent } from "../types/Event";
+import { AllEvent, GetEventMessageResponse } from "../types/Event";
 import { Friend } from "../types/Friend";
 import profilePic from "../assets/ProfilePic.png";
 import styles from "./EventDetailsPage.module.css";
+import { registerEvent } from '../api/EventApi';
+import { useInfo } from "../UserInfo";
 
 
 	
 const EventDetailsPage: React.FC = () => {
 	const param = useLocation();
   	const { event } = param.state as { event: AllEvent };
+	const { state } = useInfo();
+	const token = state.user?.token || "";
 
 	// check if the event exists, if not, display a statement saying this
 	if (event == undefined) {
@@ -19,8 +23,26 @@ const EventDetailsPage: React.FC = () => {
     		</main>
 		);
 	}
+
+	const handleRegister = () => {
+		registerEvent(token, event.id).then((response : GetEventMessageResponse) => {
+			if (response) {
+				if (response.message === "Event registered successfully"){
+					alert(response.message)
+				}else{
+					alert("Event registered failed")
+				}
+			} else {
+				alert("Event registered failed")
+				console.error("Failed to login user", response);
+				}
+		})
+		.catch((error) => {
+			console.error("Error logging in:", error);
+		});
+	};
 	// const friends: Array<Friend> = currentEvent.friends;
-	const friends: Array<Friend> = [];
+	const friends: Array<Friend> = event.attendeesFriends;
 	// get event location or array with first string saying no location provided if no location
 	const location = event.address?.length > 0
 			? event.address.split(",")
@@ -64,7 +86,7 @@ const EventDetailsPage: React.FC = () => {
 					</div>
 					{/* display register button */}
 					<div className={`${styles.registerButtonDiv} text-center`}>
-						<button>Register for Event</button>
+						<button onClick={() => handleRegister()}>Register for Event</button>
 					</div>
 				</div>
 
