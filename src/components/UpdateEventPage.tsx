@@ -51,7 +51,7 @@ const UpdateEventPage: React.FC = () => {
 			startdatetime: startdatetime.value,
 			enddatetime: enddatetime.value,
 			address: address,
-			hostId: userEmail
+			hostid: userEmail
 		};
 		// send an alert saying the event is updated
 		// ADD EVENT TO DATABASE LATER
