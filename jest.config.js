@@ -11,7 +11,8 @@ module.exports = {
   },
   setupFilesAfterEnv: [
     '@testing-library/jest-dom',
-    '<rootDir>/jest.setup.js'
+    '<rootDir>/jest.setup.js',
+    "<rootDir>/src/setupTests.js"
   ],  // Setup testing library
   "compilerOptions": {
     "types": ["jest"]
