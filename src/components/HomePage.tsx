@@ -22,7 +22,7 @@ function MainPage() {
         {state.isLogin && (
           <div className="d-flex flex-column align-items-center text-center">
             <p className="text-muted small">
-              Want to post your events here? <a href="/admin-apply" className="text-primary text-decoration-underline">Learn more</a>.
+              Want to post your events here? <Link to="/AdminApplyPage" className="text-primary text-decoration-underline">Learn more</Link>.
             </p>
             <Link to="/profile">
               <button className="btn btn-primary">Go to Profile Page!</button>
