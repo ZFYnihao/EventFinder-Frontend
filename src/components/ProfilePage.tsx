@@ -13,9 +13,6 @@ const ProfilePage: React.FC = () => {
     const [friendRequests, setFriendRequests] = useState<Array<Friend>>([]);
     const [refreshTrigger, setRefreshTrigger] = useState(false);
 
-    if (!state.isLogin) {
-        return <h2>Access Denied. Please log in to view this page.</h2>;
-    }
     
     useEffect(() => {
         const fetchFriends = async () => {
@@ -29,7 +26,6 @@ const ProfilePage: React.FC = () => {
                 if (Array.isArray(response.friends)) {
                     setFriends(response.friends);
                 } else {
-                    console.error("Unexpected response format:", response);
                     setFriends([]); 
                 }
             } catch (error) {
@@ -49,7 +45,6 @@ const ProfilePage: React.FC = () => {
                 if (Array.isArray(response.friendRequests)) {
                     setFriendRequests(response.friendRequests);
                 } else {
-                    console.error("Unexpected response format:", response);
                     setFriendRequests([]); 
                 }
             } catch (error) {
@@ -139,6 +134,9 @@ const ProfilePage: React.FC = () => {
             console.error("Remove Friend Error:", error);
         });
     }
+    if (!state.isLogin) {
+        return <h2>Access Denied. Please log in to view this page.</h2>;
+    }
 
     return (
         <div className={styles.profileWrapper}>
@@ -164,15 +162,19 @@ const ProfilePage: React.FC = () => {
                             <h4>Friends:</h4>
                             <div className={styles.friendsList}>
                                 <ul className="list-unstyled">
-                                    {friends.map((friend) => (
+                                {friends.length === 0 ? (
+                                    <p>User has no friend</p>
+                                    ) : (
+                                    friends.map((friend) => (
                                         <li key={friend.id} className={styles.friendItem}>
-                                            <img src={profilePic} alt="Friend" className={styles.friendImg} />
-                                            {friend.fullname} ({friend.email})
-                                            <div>
+                                        <img src={profilePic} alt="Friend" className={styles.friendImg} />
+                                        {friend.fullname} ({friend.email})
+                                        <div>
                                             <button className="btn btn-danger btn-sm" onClick={() => removeFriend(friend)}>-</button>
-                                            </div>
+                                        </div>
                                         </li>
-                                    ))}
+                                    ))
+                                    )}
                                 </ul>
                             </div>
                         </div>
@@ -182,16 +184,30 @@ const ProfilePage: React.FC = () => {
                             <h4>Pending Requests:</h4>
                             <div className={styles.pendingRequestsList}>
                                 <ul className="list-unstyled">
-                                    {friendRequests.map((friend) => (
+                                    {friendRequests.length === 0 ? (
+                                    <p>User has no pending friend request</p>
+                                    ) : (
+                                    friendRequests.map((friend) => (
                                         <li key={friend.id} className={`${styles.friendItem} d-flex align-items-center`}>
-                                            <img src={profilePic} alt="Friend" className={styles.friendImg} />
-                                            {friend.fullname} ({friend.email})
-                                            <div className={styles.friendActions}>
-                                                <button className="btn btn-success btn-sm" onClick={() => acceptFriendRequest(friend)}>✔</button>
-                                                <button className="btn btn-danger btn-sm" onClick={() => declineFriendRequest(friend)}>✖</button>
-                                            </div>
+                                        <img src={profilePic} alt="Friend" className={styles.friendImg} />
+                                        {friend.fullname} ({friend.email})
+                                        <div className={styles.friendActions}>
+                                            <button
+                                            className="btn btn-success btn-sm"
+                                            onClick={() => acceptFriendRequest(friend)}
+                                            >
+                                            ✔
+                                            </button>
+                                            <button
+                                            className="btn btn-danger btn-sm"
+                                            onClick={() => declineFriendRequest(friend)}
+                                            >
+                                            ✖
+                                            </button>
+                                        </div>
                                         </li>
-                                    ))}
+                                    ))
+                                    )}
                                 </ul>
                             </div>
                         </div>
