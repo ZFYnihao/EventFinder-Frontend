@@ -9,7 +9,7 @@ import { updateEvent } from '../api/EventApi';
 // mock the data
 const mockEvent = {id:1, name:"Mock Event", desc:"This is a description of a mock event.",
   reglink:"", startdatetime: "2025-03-08T17:00", enddatetime:"2025-03-08T19:00",
-   address:", , ", hostId: "fake@gmail.com"};
+   address:", , ", hostid: "fake@gmail.com"};
 
 // Mock the modules
 jest.mock('../UserInfo');
@@ -82,7 +82,7 @@ describe('UpdateEvent', () => {
     // changed mock event
     const mockEvent2 = {id:1, name:"Mock Event 2", desc:"This is a description of a mock event - Changed",
       reglink:"", startdatetime: "2025-03-08T18:00", enddatetime:"2025-03-08T20:00",
-       address:", , ", hostId: "fake@gmail.com"};
+       address:", , ", hostid: "fake@gmail.com"};
 
     // set the value of the input elements to the changed event data
     (screen.getByPlaceholderText("Name") as HTMLInputElement).value = mockEvent2.name;
