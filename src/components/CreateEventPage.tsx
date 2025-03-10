@@ -33,7 +33,7 @@ const CreateEventPage: React.FC = () => {
 			startdatetime: startdatetime.value,
 			enddatetime: enddatetime.value,
 			address: address,
-			hostId: userEmail
+			hostid: userEmail
 		};
 		// send an alert saying the event is created
 		// ADD EVENT TO DATABASE LATER
