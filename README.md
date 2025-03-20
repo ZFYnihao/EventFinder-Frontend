@@ -2,6 +2,13 @@
 
 This project uses **React + TypeScript + Vite**. Follow the steps below to install and run the project.
 
+## For windows:
+```sh
+npm install
+npm run dev
+```
+
+
 ## For mac:
 
 ```sh
